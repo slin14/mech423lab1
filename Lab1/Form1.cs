@@ -14,6 +14,9 @@ namespace Lab1
     {
         int mouseX = 0;
         int mouseY = 0;
+
+        string recordedClicks = "";
+
         public Form1()
         {
             InitializeComponent();
@@ -48,16 +51,21 @@ namespace Lab1
         // show them in the appropriate textboxes
         private void pictureBoxMouseMove(object sender, MouseEventArgs e)
         {
-            mouseX = e.X;
-            mouseY = e.Y;
-
-            textBox1.Text = mouseX.ToString();
-            textBox2.Text = mouseY.ToString();
+            textBox1.Text = e.X.ToString();
+            textBox2.Text = e.Y.ToString();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        // when MouseClick is called, aquire the mouse position
+        // construct a string of the mouse position and end-of-line character
+        // add this string to the Textbox
+        private void PictureBoxMouseClick(object sender, MouseEventArgs e)
+        {
+            textBox3.AppendText($"({e.X},{e.Y})\r\n");
         }
     }
 }
