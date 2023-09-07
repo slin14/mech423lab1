@@ -17,6 +17,7 @@ namespace Lab1
         public Form2()
         {
             InitializeComponent();
+            timer1.Start();
         }
 
         // enqueue values from the Textbox into dataQueue
@@ -40,5 +41,33 @@ namespace Lab1
 
         }
 
+        // display the contents of dataQueue in the large multi-line Textbox
+        private void UpdateQueue(Queue<Int32> dataQueue)
+        {
+            textBox6.Clear();
+            foreach (Int32 item in dataQueue)
+            {
+                textBox6.AppendText($"{item.ToString()}, ");
+            }
+        }
+
+        // dequeue values from dataQueue
+        // if dataQueue is empty, show a MessageBox to provide user with an error message
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (dataQueue.Count > 0)
+            {
+                dataQueue.Dequeue();
+            }
+            else
+            {
+                MessageBox.Show("Error: queue is empty");
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            UpdateQueue(dataQueue);
+        }
     }
 }
