@@ -29,7 +29,27 @@ namespace Lab1
         // dequeue and average first N data points
         private void button3_Click(object sender, EventArgs e)
         {
+            int numDataPoints = 0;
+            int sum = 0;
+            double average = 0;
 
+            // check there are sufficient data points in the queue
+            if (dataQueue.Count <= 0)
+            {
+                MessageBox.Show("Error: queue is empty");
+            }
+            else
+            {
+                while(dataQueue.Count > 0)
+                {
+                    sum += dataQueue.Dequeue();
+                    numDataPoints++;
+                }
+                average = (double)sum / numDataPoints;
+            }
+            
+            textBox4.Text = numDataPoints.ToString();
+            textBox5.Text = average.ToString();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -69,6 +89,11 @@ namespace Lab1
         private void timer1_Tick(object sender, EventArgs e)
         {
             UpdateQueue();
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
