@@ -26,6 +26,7 @@ namespace Lab1
             dataQueue.Enqueue(Convert.ToInt32(textBox1.Text)); // Convert.ToInt32 converts strings to Int
         }
 
+        // dequeue and average first N data points
         private void button3_Click(object sender, EventArgs e)
         {
 
@@ -42,7 +43,7 @@ namespace Lab1
         }
 
         // display the contents of dataQueue in the large multi-line Textbox
-        private void UpdateQueue(Queue<Int32> dataQueue)
+        private void UpdateQueue()
         {
             textBox6.Clear();
             foreach (Int32 item in dataQueue)
@@ -67,7 +68,7 @@ namespace Lab1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            UpdateQueue(dataQueue);
+            UpdateQueue();
         }
     }
 }
