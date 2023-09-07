@@ -12,14 +12,17 @@ namespace Lab1
 {
     public partial class Form2 : Form
     {
+        Queue<Int32> dataQueue = new Queue<Int32>();
+
         public Form2()
         {
             InitializeComponent();
         }
 
+        // enqueue values from the Textbox into dataQueue
         private void button1_Click(object sender, EventArgs e)
         {
-
+            dataQueue.Enqueue(Convert.ToInt32(textBox1.Text)); // Convert.ToInt32 converts strings to Int
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -36,5 +39,6 @@ namespace Lab1
         {
 
         }
+
     }
 }
