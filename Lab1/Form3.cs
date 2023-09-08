@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Concurrent;
 
 namespace Lab1
 {
     public partial class Form3 : Form
     {
-		Queue<Int32> dataQueue = new Queue<Int32>();
+		ConcurrentQueue<Int32> dataQueue = new ConcurrentQueue<Int32>();
 
         public Form3()
         {
@@ -32,6 +33,7 @@ namespace Lab1
             int numDataPoints = 0;
             int sum = 0;
             double average = 0;
+            Int32 dequeuedItem = 0;
 
             // check there are sufficient data points in the queue
             if (dataQueue.Count <= 0)
@@ -40,9 +42,9 @@ namespace Lab1
             }
             else
             {
-                while(dataQueue.Count > 0)
+                while(dataQueue.TryDequeue(out dequeuedItem))
                 {
-                    sum += dataQueue.Dequeue();
+                    sum += dequeuedItem;
                     numDataPoints++;
                 }
                 average = (double)sum / numDataPoints;
@@ -76,9 +78,10 @@ namespace Lab1
         // if dataQueue is empty, show a MessageBox to provide user with an error message
         private void button2_Click(object sender, EventArgs e)
         {
-            if (dataQueue.Count > 0)
+            Int32 dequeuedItem = 0;
+            if (dataQueue.TryDequeue(out dequeuedItem)) // out keyword causes arguments to be passed by reference
             {
-                dataQueue.Dequeue();
+                // dequeue successful
             }
             else
             {
