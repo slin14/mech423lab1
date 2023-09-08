@@ -195,7 +195,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form3";
-            this.Text = "Form3";
+            this.Text = "ConcurrentQueueTest";
             this.ResumeLayout(false);
             this.PerformLayout();
 
