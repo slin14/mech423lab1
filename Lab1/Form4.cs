@@ -43,7 +43,6 @@ namespace Lab1
         ConcurrentQueue<Int32> ay = new ConcurrentQueue<Int32>();
         ConcurrentQueue<Int32> az = new ConcurrentQueue<Int32>();
 
-
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -200,6 +199,7 @@ namespace Lab1
             textBoxOrientation.Text = orientation;            
         }
 
+        // close serial port
         private void Form4_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (serialPort1.IsOpen)
@@ -211,6 +211,41 @@ namespace Lab1
         private void button1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonFilename_Click(object sender, EventArgs e)
+        {
+            if (textBoxFileName.Text == "")
+            {
+                textBoxFileName.Text = "result.csv";
+            }
+
+            // save data to CSV file if asked
+            if (checkBoxSavetofile.Checked)
+            {
+                // StreamWriter object for output file
+                StreamWriter outputFile;
+
+                int tempAx = 127;
+                int tempAy = 127;
+                int tempAz = 127;
+
+                // datestamp
+                DateTime now = DateTime.Now;
+
+                outputFile = new StreamWriter(textBoxFileName.Text); // saves to bin\Debug\
+
+                while (ax.TryDequeue(out tempAx) && ay.TryDequeue(out tempAy) && az.TryDequeue(out tempAz))
+                {
+                    outputFile.WriteLine($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {now.ToString("HH.mm.ss")}");
+                }
+
+                outputFile.Close();
+
+                // // optional: show a message box indicating data is save to file
+                // MessageBox.Show($"saved data to {textBoxFileName.Text}");
+            }
+            
         }
     }
 }

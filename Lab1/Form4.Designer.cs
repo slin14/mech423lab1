@@ -49,6 +49,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxOrientation = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.buttonFilename = new System.Windows.Forms.Button();
+            this.textBoxFileName = new System.Windows.Forms.TextBox();
+            this.checkBoxSavetofile = new System.Windows.Forms.CheckBox();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // label1
@@ -99,7 +103,7 @@
             // 
             this.textBoxBytesToRead.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxBytesToRead.Location = new System.Drawing.Point(161, 57);
-            this.textBoxBytesToRead.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxBytesToRead.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxBytesToRead.Name = "textBoxBytesToRead";
             this.textBoxBytesToRead.Size = new System.Drawing.Size(141, 26);
             this.textBoxBytesToRead.TabIndex = 2;
@@ -108,7 +112,7 @@
             // 
             this.textBoxTempStringLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxTempStringLength.Location = new System.Drawing.Point(161, 87);
-            this.textBoxTempStringLength.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxTempStringLength.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxTempStringLength.Name = "textBoxTempStringLength";
             this.textBoxTempStringLength.Size = new System.Drawing.Size(141, 26);
             this.textBoxTempStringLength.TabIndex = 3;
@@ -117,7 +121,7 @@
             // 
             this.textBoxItemsInQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxItemsInQueue.Location = new System.Drawing.Point(161, 116);
-            this.textBoxItemsInQueue.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxItemsInQueue.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxItemsInQueue.Name = "textBoxItemsInQueue";
             this.textBoxItemsInQueue.Size = new System.Drawing.Size(141, 26);
             this.textBoxItemsInQueue.TabIndex = 4;
@@ -125,7 +129,7 @@
             // textBoxSerialDataStream
             // 
             this.textBoxSerialDataStream.Location = new System.Drawing.Point(8, 185);
-            this.textBoxSerialDataStream.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxSerialDataStream.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxSerialDataStream.Multiline = true;
             this.textBoxSerialDataStream.Name = "textBoxSerialDataStream";
             this.textBoxSerialDataStream.Size = new System.Drawing.Size(307, 155);
@@ -141,7 +145,7 @@
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(9, 9);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(146, 28);
             this.comboBox1.TabIndex = 0;
@@ -151,7 +155,7 @@
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.Location = new System.Drawing.Point(161, 8);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(153, 27);
             this.button2.TabIndex = 1;
@@ -161,6 +165,7 @@
             // 
             // timer1
             // 
+            this.timer1.Interval = 400;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label5
@@ -226,7 +231,7 @@
             // textBoxOrientation
             // 
             this.textBoxOrientation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxOrientation.Location = new System.Drawing.Point(161, 397);
+            this.textBoxOrientation.Location = new System.Drawing.Point(161, 391);
             this.textBoxOrientation.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxOrientation.Name = "textBoxOrientation";
             this.textBoxOrientation.Size = new System.Drawing.Size(141, 26);
@@ -236,18 +241,53 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(4, 399);
+            this.label8.Location = new System.Drawing.Point(4, 393);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(87, 20);
             this.label8.TabIndex = 14;
             this.label8.Text = "Orientation";
             // 
+            // buttonFilename
+            // 
+            this.buttonFilename.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonFilename.Location = new System.Drawing.Point(8, 466);
+            this.buttonFilename.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonFilename.Name = "buttonFilename";
+            this.buttonFilename.Size = new System.Drawing.Size(150, 27);
+            this.buttonFilename.TabIndex = 4;
+            this.buttonFilename.Text = "Select Filename";
+            this.buttonFilename.UseVisualStyleBackColor = true;
+            this.buttonFilename.Click += new System.EventHandler(this.buttonFilename_Click);
+            // 
+            // textBoxFileName
+            // 
+            this.textBoxFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFileName.Location = new System.Drawing.Point(161, 467);
+            this.textBoxFileName.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxFileName.Name = "textBoxFileName";
+            this.textBoxFileName.Size = new System.Drawing.Size(141, 26);
+            this.textBoxFileName.TabIndex = 3;
+            // 
+            // checkBoxSavetofile
+            // 
+            this.checkBoxSavetofile.AutoSize = true;
+            this.checkBoxSavetofile.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxSavetofile.Location = new System.Drawing.Point(9, 443);
+            this.checkBoxSavetofile.Name = "checkBoxSavetofile";
+            this.checkBoxSavetofile.Size = new System.Drawing.Size(101, 21);
+            this.checkBoxSavetofile.TabIndex = 2;
+            this.checkBoxSavetofile.Text = "Save to File";
+            this.checkBoxSavetofile.UseVisualStyleBackColor = true;
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(323, 440);
+            this.ClientSize = new System.Drawing.Size(323, 504);
+            this.Controls.Add(this.checkBoxSavetofile);
+            this.Controls.Add(this.textBoxFileName);
+            this.Controls.Add(this.buttonFilename);
             this.Controls.Add(this.textBoxOrientation);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.textBoxAz);
@@ -266,7 +306,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form4";
             this.Text = "Serial Demo";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form4_FormClosing);
@@ -297,5 +337,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxOrientation;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button buttonFilename;
+        private System.Windows.Forms.TextBox textBoxFileName;
+        private System.Windows.Forms.CheckBox checkBoxSavetofile;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
