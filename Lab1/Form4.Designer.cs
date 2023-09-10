@@ -28,33 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxBytesToRead = new System.Windows.Forms.TextBox();
+            this.textBoxTempStringLength = new System.Windows.Forms.TextBox();
+            this.textBoxItemsInQueue = new System.Windows.Forms.TextBox();
+            this.textBoxSerialDataStream = new System.Windows.Forms.TextBox();
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(11, 11);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(179, 33);
-            this.comboBox1.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 194);
+            this.label1.Location = new System.Drawing.Point(6, 222);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(176, 25);
             this.label1.TabIndex = 1;
@@ -64,7 +58,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 72);
+            this.label2.Location = new System.Drawing.Point(6, 100);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(188, 25);
             this.label2.TabIndex = 2;
@@ -74,7 +68,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(6, 109);
+            this.label3.Location = new System.Drawing.Point(6, 137);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(184, 25);
             this.label3.TabIndex = 3;
@@ -84,7 +78,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 145);
+            this.label4.Location = new System.Drawing.Point(6, 173);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(144, 25);
             this.label4.TabIndex = 4;
@@ -93,54 +87,85 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(196, 11);
+            this.button1.Location = new System.Drawing.Point(215, 49);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(223, 33);
+            this.button1.Size = new System.Drawing.Size(204, 33);
             this.button1.TabIndex = 5;
             this.button1.Text = "Disconnect Serial";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // textBoxBytesToRead
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(215, 71);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(187, 30);
-            this.textBox1.TabIndex = 1;
+            this.textBoxBytesToRead.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBytesToRead.Location = new System.Drawing.Point(215, 99);
+            this.textBoxBytesToRead.Name = "textBoxBytesToRead";
+            this.textBoxBytesToRead.Size = new System.Drawing.Size(187, 30);
+            this.textBoxBytesToRead.TabIndex = 2;
             // 
-            // textBox2
+            // textBoxTempStringLength
             // 
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(215, 107);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(187, 30);
-            this.textBox2.TabIndex = 2;
+            this.textBoxTempStringLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTempStringLength.Location = new System.Drawing.Point(215, 135);
+            this.textBoxTempStringLength.Name = "textBoxTempStringLength";
+            this.textBoxTempStringLength.Size = new System.Drawing.Size(187, 30);
+            this.textBoxTempStringLength.TabIndex = 3;
             // 
-            // textBox3
+            // textBoxItemsInQueue
             // 
-            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(215, 143);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(187, 30);
-            this.textBox3.TabIndex = 3;
+            this.textBoxItemsInQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxItemsInQueue.Location = new System.Drawing.Point(215, 171);
+            this.textBoxItemsInQueue.Name = "textBoxItemsInQueue";
+            this.textBoxItemsInQueue.Size = new System.Drawing.Size(187, 30);
+            this.textBoxItemsInQueue.TabIndex = 4;
             // 
-            // textBox4
+            // textBoxSerialDataStream
             // 
-            this.textBox4.Location = new System.Drawing.Point(11, 222);
-            this.textBox4.Multiline = true;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(408, 190);
-            this.textBox4.TabIndex = 6;
+            this.textBoxSerialDataStream.Location = new System.Drawing.Point(11, 250);
+            this.textBoxSerialDataStream.Multiline = true;
+            this.textBoxSerialDataStream.Name = "textBoxSerialDataStream";
+            this.textBoxSerialDataStream.Size = new System.Drawing.Size(408, 190);
+            this.textBoxSerialDataStream.TabIndex = 6;
+            // 
+            // serialPort1
+            // 
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(12, 11);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(193, 33);
+            this.comboBox1.TabIndex = 0;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(215, 10);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(204, 33);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Open Serial Port";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(431, 424);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(431, 450);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.textBoxSerialDataStream);
+            this.Controls.Add(this.textBoxItemsInQueue);
+            this.Controls.Add(this.textBoxTempStringLength);
+            this.Controls.Add(this.textBoxBytesToRead);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -149,22 +174,25 @@
             this.Controls.Add(this.comboBox1);
             this.Name = "Form4";
             this.Text = "Serial Demo";
+            this.Load += new System.EventHandler(this.Form4_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBoxBytesToRead;
+        private System.Windows.Forms.TextBox textBoxTempStringLength;
+        private System.Windows.Forms.TextBox textBoxItemsInQueue;
+        private System.Windows.Forms.TextBox textBoxSerialDataStream;
+        private System.IO.Ports.SerialPort serialPort1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Timer timer1;
     }
 }
