@@ -16,6 +16,7 @@ namespace Lab1
         public Form4()
         {
             InitializeComponent();
+            timer1.Start();
         }
 
         private void Form4_Load(object sender, EventArgs e)
@@ -42,7 +43,26 @@ namespace Lab1
         // Once the serial port is opened, the accelerometer data is automatically enabled as output
         private void button2_Click(object sender, EventArgs e)
         {
-            serialPort1.Open();
+            // serialPort1.Open();
+
+            string nameCOMPort = "";
+            // check if connection is satisfied
+            if (comboBox1.Text != "")
+                nameCOMPort = comboBox1.Text;
+            else
+                MessageBox.Show("No COM Port Selected", "Error");
+            // open and close port
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Dispose();
+                button2.Text = "Connect";
+            }
+            else if (!serialPort1.IsOpen)
+            {
+                serialPort1.PortName = nameCOMPort;
+                serialPort1.Open();
+                button2.Text = "Disconnect";
+            }
         }
 
         // DataReceived event handler for serialPort
@@ -71,8 +91,22 @@ namespace Lab1
             if (serialPort1.IsOpen)
                 textBoxBytesToRead.Text = serialPort1.BytesToRead.ToString();
             textBoxTempStringLength.Text = serialDataString.Length.ToString();
-            textBoxItemsInQueue.AppendText(serialDataString);
+            textBoxItemsInQueue.Text = serialDataString.Count().ToString();
+            textBoxSerialDataStream.AppendText(serialDataString);
             serialDataString = "";
+        }
+
+        private void Form4_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Dispose();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
