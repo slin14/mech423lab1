@@ -41,6 +41,12 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxAx = new System.Windows.Forms.TextBox();
+            this.textBoxAy = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBoxAz = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -155,11 +161,77 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(5, 377);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(27, 20);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Ax";
+            // 
+            // textBoxAx
+            // 
+            this.textBoxAx.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAx.Location = new System.Drawing.Point(36, 374);
+            this.textBoxAx.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxAx.Name = "textBoxAx";
+            this.textBoxAx.Size = new System.Drawing.Size(53, 26);
+            this.textBoxAx.TabIndex = 8;
+            // 
+            // textBoxAy
+            // 
+            this.textBoxAy.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAy.Location = new System.Drawing.Point(157, 374);
+            this.textBoxAy.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxAy.Name = "textBoxAy";
+            this.textBoxAy.Size = new System.Drawing.Size(53, 26);
+            this.textBoxAy.TabIndex = 10;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(126, 377);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(27, 20);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Ay";
+            // 
+            // textBoxAz
+            // 
+            this.textBoxAz.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAz.Location = new System.Drawing.Point(262, 374);
+            this.textBoxAz.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxAz.Name = "textBoxAz";
+            this.textBoxAz.Size = new System.Drawing.Size(53, 26);
+            this.textBoxAz.TabIndex = 12;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(231, 377);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(28, 20);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Az";
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(323, 366);
+            this.ClientSize = new System.Drawing.Size(323, 406);
+            this.Controls.Add(this.textBoxAz);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.textBoxAy);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.textBoxAx);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBoxSerialDataStream);
             this.Controls.Add(this.textBoxItemsInQueue);
@@ -193,5 +265,11 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBoxAx;
+        private System.Windows.Forms.TextBox textBoxAy;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxAz;
+        private System.Windows.Forms.Label label7;
     }
 }

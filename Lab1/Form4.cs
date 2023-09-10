@@ -38,6 +38,11 @@ namespace Lab1
         // store each new data byte in a ConcurrentQueue instead of a string
         ConcurrentQueue<Int32> dataQueue = new ConcurrentQueue<Int32>();
 
+        // store Ax, Ay, Az values in ConcurrentQueues
+        ConcurrentQueue<Int32> ax = new ConcurrentQueue<Int32>();
+        ConcurrentQueue<Int32> ay = new ConcurrentQueue<Int32>();
+        ConcurrentQueue<Int32> az = new ConcurrentQueue<Int32>();
+
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -105,11 +110,44 @@ namespace Lab1
 
             // display the contents of dataQueue in textBoxSerialDataStream
             Int32 dequeuedItem = 0;
+
+            // parse the accelerometer data stream into Ax, Ay, Az
+            bool nextIsAx = false;
+            bool nextIsAy = false;
+            bool nextIsAz = false;
+
             foreach (Int32 item in dataQueue)
             {
                 if (dataQueue.TryDequeue(out dequeuedItem))
                 {
                     textBoxSerialDataStream.AppendText($"{dequeuedItem.ToString()}, ");
+
+                    // parse the accelerometer data stream into Ax, Ay, Az
+                    // display in textboxes and store in respective queues
+                    if (dequeuedItem == 255)
+                    {
+                        nextIsAx = true;
+                    }
+                    else if (nextIsAx)
+                    {
+                        ax.Enqueue(dequeuedItem);
+                        textBoxAx.Text = dequeuedItem.ToString();
+                        nextIsAy = true;
+                        nextIsAx = false;
+                    }
+                    else if (nextIsAy)
+                    {
+                        ay.Enqueue(dequeuedItem);
+                        textBoxAy.Text = dequeuedItem.ToString();
+                        nextIsAz = true;
+                        nextIsAy = false;
+                    }
+                    else if (nextIsAz)
+                    {
+                        az.Enqueue(dequeuedItem);
+                        textBoxAz.Text = dequeuedItem.ToString();
+                        nextIsAz = false;
+                    }
                 }
             }
             serialDataString = "";
