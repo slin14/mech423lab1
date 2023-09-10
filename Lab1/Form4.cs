@@ -43,6 +43,7 @@ namespace Lab1
         ConcurrentQueue<Int32> ay = new ConcurrentQueue<Int32>();
         ConcurrentQueue<Int32> az = new ConcurrentQueue<Int32>();
 
+
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -107,14 +108,22 @@ namespace Lab1
             textBoxTempStringLength.Text = serialDataString.Length.ToString();
             textBoxItemsInQueue.Text = dataQueue.Count.ToString();
             textBoxSerialDataStream.Clear();
+            textBoxOrientation.Clear();
+
 
             // display the contents of dataQueue in textBoxSerialDataStream
             Int32 dequeuedItem = 0;
 
-            // parse the accelerometer data stream into Ax, Ay, Az
+            // for parsing the accelerometer data stream into Ax, Ay, Az
             bool nextIsAx = false;
             bool nextIsAy = false;
             bool nextIsAz = false;
+            int tempAx = 127;
+            int tempAy = 127;
+            int tempAz = 127;
+
+            // orientation of the MSP430EXP PCB
+            string orientation = "";
 
             foreach (Int32 item in dataQueue)
             {
@@ -127,6 +136,7 @@ namespace Lab1
                     if (dequeuedItem == 255)
                     {
                         nextIsAx = true;
+                        orientation = "";
                     }
                     else if (nextIsAx)
                     {
@@ -134,6 +144,7 @@ namespace Lab1
                         textBoxAx.Text = dequeuedItem.ToString();
                         nextIsAy = true;
                         nextIsAx = false;
+                        tempAx = dequeuedItem;
                     }
                     else if (nextIsAy)
                     {
@@ -141,16 +152,52 @@ namespace Lab1
                         textBoxAy.Text = dequeuedItem.ToString();
                         nextIsAz = true;
                         nextIsAy = false;
+                        tempAy = dequeuedItem;
                     }
                     else if (nextIsAz)
                     {
                         az.Enqueue(dequeuedItem);
                         textBoxAz.Text = dequeuedItem.ToString();
                         nextIsAz = false;
+                        tempAz = dequeuedItem;
                     }
                 }
             }
             serialDataString = "";
+
+            // determine orientation of the MSP430EXP PCB and display orientation in textbox
+            // x orientation
+            if (tempAx >= 127) 
+            {
+                orientation = orientation + "+x, ";
+            }
+            else
+            {
+                orientation = orientation + "-x, ";
+            }
+
+            // y orientation
+            if (tempAy >= 127)
+            {
+                orientation = orientation + "+y, ";
+            }
+            else
+            {
+                orientation = orientation + "-y, ";
+            }
+
+            // z orientation
+            if (tempAz >= 127)
+            {
+                orientation = orientation + "+z";
+            }
+            else
+            {
+                orientation = orientation + "-z";
+            }
+
+            // display orientation in textbox
+            textBoxOrientation.Text = orientation;            
         }
 
         private void Form4_FormClosing(object sender, FormClosingEventArgs e)
