@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Lab1
 {
@@ -32,6 +34,9 @@ namespace Lab1
 
         // to temporarily hold incoming serial data
         string serialDataString = "";
+
+        // store each new data byte in a ConcurrentQueue instead of a string
+        ConcurrentQueue<Int32> dataQueue = new ConcurrentQueue<Int32>();
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -80,6 +85,10 @@ namespace Lab1
                 newByte = serialPort1.ReadByte();
                 // Convert each byte to a string and append it to the serialDataString with “,“ and “ “ characters
                 serialDataString = serialDataString + newByte.ToString() + ", ";
+
+                // Enqueue
+                dataQueue.Enqueue(newByte);
+
                 bytesToRead = serialPort1.BytesToRead;
             }
         }
@@ -91,8 +100,18 @@ namespace Lab1
             if (serialPort1.IsOpen)
                 textBoxBytesToRead.Text = serialPort1.BytesToRead.ToString();
             textBoxTempStringLength.Text = serialDataString.Length.ToString();
-            textBoxItemsInQueue.Text = serialDataString.Count().ToString();
-            textBoxSerialDataStream.AppendText(serialDataString);
+            textBoxItemsInQueue.Text = dataQueue.Count.ToString();
+            textBoxSerialDataStream.Clear();
+
+            // display the contents of dataQueue in textBoxSerialDataStream
+            Int32 dequeuedItem = 0;
+            foreach (Int32 item in dataQueue)
+            {
+                if (dataQueue.TryDequeue(out dequeuedItem))
+                {
+                    textBoxSerialDataStream.AppendText($"{dequeuedItem.ToString()}, ");
+                }
+            }
             serialDataString = "";
         }
 
