@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxAx = new System.Windows.Forms.TextBox();
+            this.textBoxAy = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxAz = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.buttonProcess = new System.Windows.Forms.Button();
+            this.textBoxState = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
@@ -51,21 +51,21 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Ax";
             // 
-            // textBox1
+            // textBoxAx
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(38, 14);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(79, 30);
-            this.textBox1.TabIndex = 0;
+            this.textBoxAx.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAx.Location = new System.Drawing.Point(38, 14);
+            this.textBoxAx.Name = "textBoxAx";
+            this.textBoxAx.Size = new System.Drawing.Size(79, 30);
+            this.textBoxAx.TabIndex = 0;
             // 
-            // textBox2
+            // textBoxAy
             // 
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(165, 14);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(79, 30);
-            this.textBox2.TabIndex = 1;
+            this.textBoxAy.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAy.Location = new System.Drawing.Point(165, 14);
+            this.textBoxAy.Name = "textBoxAy";
+            this.textBoxAy.Size = new System.Drawing.Size(79, 30);
+            this.textBoxAy.TabIndex = 1;
             // 
             // label2
             // 
@@ -77,13 +77,13 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Ay";
             // 
-            // textBox3
+            // textBoxAz
             // 
-            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(288, 14);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(79, 30);
-            this.textBox3.TabIndex = 2;
+            this.textBoxAz.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAz.Location = new System.Drawing.Point(288, 14);
+            this.textBoxAz.Name = "textBoxAz";
+            this.textBoxAz.Size = new System.Drawing.Size(79, 30);
+            this.textBoxAz.TabIndex = 2;
             // 
             // label3
             // 
@@ -95,30 +95,31 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Az";
             // 
-            // button1
+            // buttonProcess
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(9, 59);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(358, 32);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Process New Data Point";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonProcess.Location = new System.Drawing.Point(9, 59);
+            this.buttonProcess.Name = "buttonProcess";
+            this.buttonProcess.Size = new System.Drawing.Size(358, 32);
+            this.buttonProcess.TabIndex = 3;
+            this.buttonProcess.Text = "Process New Data Point";
+            this.buttonProcess.UseVisualStyleBackColor = true;
+            this.buttonProcess.Click += new System.EventHandler(this.buttonProcess_Click);
             // 
-            // textBox4
+            // textBoxState
             // 
-            this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(257, 103);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(109, 30);
-            this.textBox4.TabIndex = 8;
-            this.textBox4.TabStop = false;
+            this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxState.Location = new System.Drawing.Point(257, 103);
+            this.textBoxState.Name = "textBoxState";
+            this.textBoxState.Size = new System.Drawing.Size(109, 30);
+            this.textBoxState.TabIndex = 8;
+            this.textBoxState.TabStop = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(129, 106);
+            this.label4.Location = new System.Drawing.Point(116, 106);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 25);
             this.label4.TabIndex = 7;
@@ -151,14 +152,14 @@
             this.ClientSize = new System.Drawing.Size(374, 450);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.textBoxState);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.buttonProcess);
+            this.Controls.Add(this.textBoxAz);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBoxAy);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxAx);
             this.Controls.Add(this.label1);
             this.Name = "Form5";
             this.Text = "Form5";
@@ -170,13 +171,13 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxAx;
+        private System.Windows.Forms.TextBox textBoxAy;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBoxAz;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Button buttonProcess;
+        private System.Windows.Forms.TextBox textBoxState;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox5;
