@@ -32,6 +32,9 @@ namespace Lab1
                 comboBox1.SelectedIndex = 0;
         }
 
+        // to display Serial Bytes to Read
+        int serialBytesToRead = 0;
+
         // to temporarily hold incoming serial data
         string serialDataString = "";
 
@@ -45,9 +48,6 @@ namespace Lab1
 
         // StreamWriter object for output file
         StreamWriter outputFile;
-
-        // datestamp
-        DateTime now = DateTime.Now;
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -88,7 +88,8 @@ namespace Lab1
             int bytesToRead;
 
             // determine the number of BytesToRead in the serial buffer
-            bytesToRead = serialPort1.BytesToRead;
+            serialBytesToRead = serialPort1.BytesToRead;
+            bytesToRead = serialBytesToRead;
 
             // read the bytes, one at a time, from the serial buffer
             while (bytesToRead != 0)
@@ -108,8 +109,9 @@ namespace Lab1
         // transfer data from serialDataString to the Serial Data Stream Textbox
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (serialPort1.IsOpen)
-                textBoxBytesToRead.Text = serialPort1.BytesToRead.ToString();
+            //if (serialPort1.IsOpen)
+            //    textBoxBytesToRead.Text = serialPort1.BytesToRead.ToString();
+            textBoxBytesToRead.Text = serialBytesToRead.ToString();
             textBoxTempStringLength.Text = serialDataString.Length.ToString();
             textBoxItemsInQueue.Text = dataQueue.Count.ToString();
             textBoxSerialDataStream.Clear();
@@ -167,7 +169,7 @@ namespace Lab1
                         tempAz = dequeuedItem;
                         if (checkBoxSavetofile.Checked)
                         {
-                            outputFile.Write($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {now.ToLongTimeString()}\n");
+                            outputFile.Write($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {DateTime.Now.ToLongTimeString()}\n");
                         }
                     }
                 }
