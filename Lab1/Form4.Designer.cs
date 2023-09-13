@@ -52,7 +52,6 @@
             this.buttonFilename = new System.Windows.Forms.Button();
             this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.checkBoxSavetofile = new System.Windows.Forms.CheckBox();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // label1
@@ -274,12 +273,13 @@
             this.checkBoxSavetofile.AutoSize = true;
             this.checkBoxSavetofile.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxSavetofile.Location = new System.Drawing.Point(12, 545);
-            this.checkBoxSavetofile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBoxSavetofile.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxSavetofile.Name = "checkBoxSavetofile";
             this.checkBoxSavetofile.Size = new System.Drawing.Size(119, 24);
             this.checkBoxSavetofile.TabIndex = 2;
             this.checkBoxSavetofile.Text = "Save to File";
             this.checkBoxSavetofile.UseVisualStyleBackColor = true;
+            this.checkBoxSavetofile.CheckedChanged += new System.EventHandler(this.checkBoxSavetofile_CheckedChanged);
             // 
             // Form4
             // 
@@ -341,6 +341,5 @@
         private System.Windows.Forms.Button buttonFilename;
         private System.Windows.Forms.TextBox textBoxFileName;
         private System.Windows.Forms.CheckBox checkBoxSavetofile;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

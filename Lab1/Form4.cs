@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
+using System.IO; // to save to file
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +42,12 @@ namespace Lab1
         ConcurrentQueue<Int32> ax = new ConcurrentQueue<Int32>();
         ConcurrentQueue<Int32> ay = new ConcurrentQueue<Int32>();
         ConcurrentQueue<Int32> az = new ConcurrentQueue<Int32>();
+
+        // StreamWriter object for output file
+        StreamWriter outputFile;
+
+        // datestamp
+        DateTime now = DateTime.Now;
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -126,7 +132,7 @@ namespace Lab1
 
             foreach (Int32 item in dataQueue)
             {
-                if (dataQueue.TryDequeue(out dequeuedItem))
+                if (dataQueue.TryDequeue(out dequeuedItem)) // in case of collision btn threads
                 {
                     textBoxSerialDataStream.AppendText($"{dequeuedItem.ToString()}, ");
 
@@ -159,6 +165,10 @@ namespace Lab1
                         textBoxAz.Text = dequeuedItem.ToString();
                         nextIsAz = false;
                         tempAz = dequeuedItem;
+                        if (checkBoxSavetofile.Checked)
+                        {
+                            outputFile.Write($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {now.ToLongTimeString()}\n");
+                        }
                     }
                 }
             }
@@ -215,6 +225,18 @@ namespace Lab1
 
         private void buttonFilename_Click(object sender, EventArgs e)
         {
+            
+			// file dialog		
+            SaveFileDialog mydialogBox = new SaveFileDialog();
+            mydialogBox.InitialDirectory = System.IO.Directory.GetCurrentDirectory(); 
+            // @"exactly what's in here" // '\' is not a special char
+            mydialogBox.ShowDialog();
+            textBoxFileName.Text = mydialogBox.FileName.ToString() + ".csv";
+        }
+
+        private void checkBoxSavetofile_CheckedChanged(object sender, EventArgs e)
+        {
+
             if (textBoxFileName.Text == "")
             {
                 textBoxFileName.Text = "result.csv";
@@ -223,29 +245,20 @@ namespace Lab1
             // save data to CSV file if asked
             if (checkBoxSavetofile.Checked)
             {
-                // StreamWriter object for output file
-                StreamWriter outputFile;
-
-                int tempAx = 127;
-                int tempAy = 127;
-                int tempAz = 127;
-
-                // datestamp
-                DateTime now = DateTime.Now;
-
                 outputFile = new StreamWriter(textBoxFileName.Text); // saves to bin\Debug\
 
-                while (ax.TryDequeue(out tempAx) && ay.TryDequeue(out tempAy) && az.TryDequeue(out tempAz))
-                {
-                    outputFile.WriteLine($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {now.ToString("HH.mm.ss")}");
-                }
-
+                //while (ax.TryDequeue(out tempAx) && ay.TryDequeue(out tempAy) && az.TryDequeue(out tempAz))
+                //{
+                //    outputFile.WriteLine($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {now.ToLongTimeString()}");
+                //}
+            }
+            else
+            { 
                 outputFile.Close();
 
                 // // optional: show a message box indicating data is save to file
                 // MessageBox.Show($"saved data to {textBoxFileName.Text}");
             }
-            
         }
     }
 }
