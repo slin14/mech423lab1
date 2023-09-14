@@ -169,7 +169,7 @@ namespace Lab1
                         tempAz = dequeuedItem;
                         if (checkBoxSavetofile.Checked)
                         {
-                            outputFile.Write($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {DateTime.Now.ToLongTimeString()}\n");
+                            outputFile.Write($"{tempAx.ToString()},{tempAy.ToString()},{tempAz.ToString()},{DateTime.Now.ToLongTimeString()}\n");
                         }
                     }
                 }

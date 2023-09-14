@@ -41,6 +41,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxDataHistory = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.checkBoxReadFromFile = new System.Windows.Forms.CheckBox();
+            this.textBoxFileName = new System.Windows.Forms.TextBox();
+            this.buttonFilename = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -151,11 +154,48 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // checkBoxReadFromFile
+            // 
+            this.checkBoxReadFromFile.AutoSize = true;
+            this.checkBoxReadFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxReadFromFile.Location = new System.Drawing.Point(9, 475);
+            this.checkBoxReadFromFile.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBoxReadFromFile.Name = "checkBoxReadFromFile";
+            this.checkBoxReadFromFile.Size = new System.Drawing.Size(141, 24);
+            this.checkBoxReadFromFile.TabIndex = 11;
+            this.checkBoxReadFromFile.Text = "Read from File";
+            this.checkBoxReadFromFile.UseVisualStyleBackColor = true;
+            this.checkBoxReadFromFile.CheckedChanged += new System.EventHandler(this.checkBoxReadFromFile_CheckedChanged);
+            // 
+            // textBoxFileName
+            // 
+            this.textBoxFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFileName.Location = new System.Drawing.Point(176, 505);
+            this.textBoxFileName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBoxFileName.Name = "textBoxFileName";
+            this.textBoxFileName.Size = new System.Drawing.Size(190, 30);
+            this.textBoxFileName.TabIndex = 12;
+            // 
+            // buttonFilename
+            // 
+            this.buttonFilename.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonFilename.Location = new System.Drawing.Point(8, 504);
+            this.buttonFilename.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFilename.Name = "buttonFilename";
+            this.buttonFilename.Size = new System.Drawing.Size(162, 33);
+            this.buttonFilename.TabIndex = 13;
+            this.buttonFilename.Text = "Select Filename";
+            this.buttonFilename.UseVisualStyleBackColor = true;
+            this.buttonFilename.Click += new System.EventHandler(this.buttonFilename_Click);
+            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 450);
+            this.ClientSize = new System.Drawing.Size(374, 556);
+            this.Controls.Add(this.checkBoxReadFromFile);
+            this.Controls.Add(this.textBoxFileName);
+            this.Controls.Add(this.buttonFilename);
             this.Controls.Add(this.textBoxDataHistory);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxState);
@@ -189,5 +229,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxDataHistory;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox checkBoxReadFromFile;
+        private System.Windows.Forms.TextBox textBoxFileName;
+        private System.Windows.Forms.Button buttonFilename;
     }
 }
