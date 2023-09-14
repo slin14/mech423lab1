@@ -130,7 +130,7 @@ namespace Lab1
             int tempAz = 127;
 
             // orientation of the MSP430EXP PCB
-            string orientation = "";
+            string orientation = ""; // TODO could use a buffer of 10 to be less sensitive
 
             foreach (Int32 item in dataQueue)
             {

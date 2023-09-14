@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxAx = new System.Windows.Forms.TextBox();
             this.textBoxAy = new System.Windows.Forms.TextBox();
@@ -38,7 +39,8 @@
             this.textBoxState = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBoxDataHistory = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -135,22 +137,26 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "Data History";
             // 
-            // textBox5
+            // textBoxDataHistory
             // 
-            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox5.Location = new System.Drawing.Point(8, 170);
-            this.textBox5.Multiline = true;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(358, 273);
-            this.textBox5.TabIndex = 10;
-            this.textBox5.TabStop = false;
+            this.textBoxDataHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDataHistory.Location = new System.Drawing.Point(8, 170);
+            this.textBoxDataHistory.Multiline = true;
+            this.textBoxDataHistory.Name = "textBoxDataHistory";
+            this.textBoxDataHistory.Size = new System.Drawing.Size(358, 273);
+            this.textBoxDataHistory.TabIndex = 10;
+            this.textBoxDataHistory.TabStop = false;
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 450);
-            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.textBoxDataHistory);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxState);
             this.Controls.Add(this.label4);
@@ -163,6 +169,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Form5";
             this.Text = "Form5";
+            this.Load += new System.EventHandler(this.Form5_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,6 +187,7 @@
         private System.Windows.Forms.TextBox textBoxState;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBoxDataHistory;
+        private System.Windows.Forms.Timer timer1;
     }
 }
