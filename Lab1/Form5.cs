@@ -43,11 +43,14 @@ namespace Lab1
 		int counter = 0;
 
 		// parameters for state machine
-		int thresh = 0;           // threshold to trigger state machine 
-                                  // for the max difference in accerelation over the last numDataPts datapoints
-                                  // need to exceed gravity (~25) and random minor motion
-        int numDataPts = 5;       // number of data points to analyze
-                                  // must be greater than 0
+		int thresh = 60;            // threshold to trigger state machine 
+                                    // for the max difference in accerelation over the last numDataPts datapoints
+                                    // need to exceed gravity (~25) and random minor motion
+        int numDataPts = 5;         // number of data points to analyze
+                                    // must be greater than 0
+        double percentExceed = 1.4; // try to prevent false positive detection for gestures 1 and 2
+                                    // % the axis in question must exceed the other axis/axes by
+                                    // in order for a gesture to be detected
 
         // store the last numDataPts Ax, Ay, Az values
         ConcurrentQueue<Int32> ax = new ConcurrentQueue<Int32>();
@@ -77,31 +80,36 @@ namespace Lab1
                     // calculate the peak difference in acceleration over the last numDataPts
                     axPeak = ax.Max() - ax.Min();
                     ayPeak = ay.Max() - ay.Min();
-                    axPeak = az.Max() - az.Min();
+                    azPeak = az.Max() - az.Min();
 
-                    if ((axPeak < thresh) && (ayPeak < thresh) && (azPeak < thresh))
-                    {
-                        // no gesture detected
-                        state = 0;
-                    }
-                    else if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
+                     if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
                     {
                         // Gesture 3 Right-hook (+X +Y +Z)
                         state = 3;
                     }
-                    else if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
+                    else if ((axPeak >= thresh) && (azPeak >= thresh) && (axPeak > ayPeak*percentExceed) && (azPeak > ayPeak* percentExceed))
                     {
                         // Gesture 2 High punch (+X +Z)
                         state = 2;
                     }
-                    else if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
+                    else if ((axPeak >= thresh) && (axPeak > ayPeak*percentExceed) && (axPeak > azPeak*percentExceed))
                     {
                         // Gesture 1 Simple punch (+X)
                         state = 1;
                     }
+                    else
+                    {
+                        // no gesture detected
+                        state = 0;
+                    }
                 }
                 else // no, don't have enough data points to analyze
                 {
+                    // store the new data point
+                    ax.Enqueue(axVal);
+                    ay.Enqueue(ayVal);
+                    az.Enqueue(azVal);
+
                     // can't perform analysis yet
                     state = 0;
                 }
@@ -125,12 +133,21 @@ namespace Lab1
                             textBoxAz.Text = match.Groups["az"].Value;
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("reached end of file!");
+                    }
                 }
             }
             else // invalid data
             {
                 MessageBox.Show("Invalid Data Point format (must be int)");
             }
+
+            // display for debug
+            textBoxAxPeak.Text = axPeak.ToString();
+            textBoxAyPeak.Text = ayPeak.ToString();
+            textBoxAzPeak.Text = azPeak.ToString();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -152,11 +169,11 @@ namespace Lab1
         private void buttonFilename_Click(object sender, EventArgs e)
         {
             // file dialog		
-            SaveFileDialog mydialogBox = new SaveFileDialog();
+            OpenFileDialog mydialogBox = new OpenFileDialog();
             mydialogBox.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
             // @"exactly what's in here" // '\' is not a special char
             mydialogBox.ShowDialog();
-            textBoxFileName.Text = mydialogBox.FileName.ToString() + ".csv";
+            textBoxFileName.Text = mydialogBox.FileName.ToString();
         }
 
         private void checkBoxReadFromFile_CheckedChanged(object sender, EventArgs e)
