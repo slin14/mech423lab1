@@ -110,7 +110,7 @@
             // buttonProcess
             // 
             this.buttonProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonProcess.Location = new System.Drawing.Point(9, 59);
+            this.buttonProcess.Location = new System.Drawing.Point(9, 56);
             this.buttonProcess.Name = "buttonProcess";
             this.buttonProcess.Size = new System.Drawing.Size(358, 32);
             this.buttonProcess.TabIndex = 3;
@@ -121,7 +121,7 @@
             // textBoxState
             // 
             this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxState.Location = new System.Drawing.Point(257, 103);
+            this.textBoxState.Location = new System.Drawing.Point(257, 94);
             this.textBoxState.Name = "textBoxState";
             this.textBoxState.Size = new System.Drawing.Size(109, 30);
             this.textBoxState.TabIndex = 8;
@@ -131,7 +131,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(116, 106);
+            this.label4.Location = new System.Drawing.Point(116, 97);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 25);
             this.label4.TabIndex = 7;
@@ -141,7 +141,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(4, 142);
+            this.label5.Location = new System.Drawing.Point(4, 129);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(118, 25);
             this.label5.TabIndex = 9;
@@ -149,11 +149,11 @@
             // 
             // textBoxDataHistory
             // 
-            this.textBoxDataHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDataHistory.Location = new System.Drawing.Point(8, 170);
+            this.textBoxDataHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDataHistory.Location = new System.Drawing.Point(8, 157);
             this.textBoxDataHistory.Multiline = true;
             this.textBoxDataHistory.Name = "textBoxDataHistory";
-            this.textBoxDataHistory.Size = new System.Drawing.Size(358, 223);
+            this.textBoxDataHistory.Size = new System.Drawing.Size(358, 236);
             this.textBoxDataHistory.TabIndex = 10;
             this.textBoxDataHistory.TabStop = false;
             // 

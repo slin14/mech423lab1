@@ -39,18 +39,27 @@ namespace Lab1
         int ayPeak = 0;
         int azPeak = 0;
 
-        int state = 0;      // 0 = READY, 3 = +X +Y +Z, 2 = +X +Z, 1 = +X
+        // STATES: 0 = READY
+        //         3 = +X +Y +Z
+        //         2 = +X +Z
+        //         1 = +X
+        int state = 0;    // internal state variable   
+        int stateUI = 0;  // to display on UI
 		int counter = 0;
+        int prevState = 0;
 
 		// parameters for state machine
-		int thresh = 60;            // threshold to trigger state machine 
+		int thresh = 65;            // threshold to trigger state machine 
                                     // for the max difference in accerelation over the last numDataPts datapoints
                                     // need to exceed gravity (~25) and random minor motion
-        int numDataPts = 5;         // number of data points to analyze
+        int numDataPts = 10;        // number of data points to analyze
                                     // must be greater than 0
-        double percentExceed = 1.4; // try to prevent false positive detection for gestures 1 and 2
+        double percentExceed = 1.3; // try to prevent false positive detection for gestures 1 and 2
                                     // % the axis in question must exceed the other axis/axes by
                                     // in order for a gesture to be detected
+        int numConsecutivePts = 7;  // number of consecutive datapoints that fit a certain gesture
+                                    // eg. 5 data points must be detected as a certain gesture
+                                    //     in order for that gesture to be displayed on the UI
 
         // store the last numDataPts Ax, Ay, Az values
         ConcurrentQueue<Int32> ax = new ConcurrentQueue<Int32>();
@@ -82,25 +91,53 @@ namespace Lab1
                     ayPeak = ay.Max() - ay.Min();
                     azPeak = az.Max() - az.Min();
 
+                    // keep track of previous state
+                    prevState = state;
+
                      if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
                     {
                         // Gesture 3 Right-hook (+X +Y +Z)
                         state = 3;
+                        if (prevState == 3)
+                        {
+                            counter++;
+                        }
+                        else
+                        {
+                            counter = 0;
+                        }
                     }
                     else if ((axPeak >= thresh) && (azPeak >= thresh) && (axPeak > ayPeak*percentExceed) && (azPeak > ayPeak* percentExceed))
                     {
                         // Gesture 2 High punch (+X +Z)
                         state = 2;
+                        if (prevState == 2)
+                        {
+                            counter++;
+                        }
+                        else
+                        {
+                            counter = 0;
+                        }
                     }
                     else if ((axPeak >= thresh) && (axPeak > ayPeak*percentExceed) && (axPeak > azPeak*percentExceed))
                     {
                         // Gesture 1 Simple punch (+X)
                         state = 1;
+                        if (prevState == 1)
+                        {
+                            counter++;
+                        }
+                        else
+                        {
+                            counter = 0;
+                        }
                     }
                     else
                     {
                         // no gesture detected
                         state = 0;
+                        counter = 0;
                     }
                 }
                 else // no, don't have enough data points to analyze
@@ -113,10 +150,16 @@ namespace Lab1
                     // can't perform analysis yet
                     state = 0;
                 }
-                
+
+                // refresh state if gesture detected/undetected
+                if ((state == 0) || (counter >= numConsecutivePts))
+                {
+                    stateUI = state;
+                }
+
+                textBoxState.Text = stateUI.ToString();
                 // display data history
-				textBoxState.Text = state.ToString();
-                textBoxDataHistory.AppendText($"({axVal}, {ayVal}, {azVal}, {state}), ");
+                textBoxDataHistory.AppendText($"({axVal}, {ayVal}, {azVal}, {stateUI}), ");
 
                 if (checkBoxReadFromFile.Checked)
                 {
@@ -198,6 +241,15 @@ namespace Lab1
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error opening file {textBoxFileName.Text}, or no file provided.\n" + ex.Message);
+                }
+
+                // empty data
+                textBoxDataHistory.Clear();
+                foreach (Int32 item in ax)
+                {
+                    ax.TryDequeue(out axOld);
+                    ay.TryDequeue(out ayOld);
+                    az.TryDequeue(out azOld);
                 }
             }
             else
