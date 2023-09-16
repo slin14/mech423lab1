@@ -130,7 +130,7 @@ namespace Lab1
             int tempAz = 127;
 
             // orientation of the MSP430EXP PCB
-            string orientation = "";
+            string orientation = ""; // TODO could use a buffer of 10 to be less sensitive
 
             foreach (Int32 item in dataQueue)
             {
@@ -169,7 +169,7 @@ namespace Lab1
                         tempAz = dequeuedItem;
                         if (checkBoxSavetofile.Checked)
                         {
-                            outputFile.Write($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {DateTime.Now.ToLongTimeString()}\n");
+                            outputFile.Write($"{tempAx.ToString()},{tempAy.ToString()},{tempAz.ToString()},{DateTime.Now.ToLongTimeString()}\n");
                         }
                     }
                 }
@@ -233,7 +233,7 @@ namespace Lab1
             mydialogBox.InitialDirectory = System.IO.Directory.GetCurrentDirectory(); 
             // @"exactly what's in here" // '\' is not a special char
             mydialogBox.ShowDialog();
-            textBoxFileName.Text = mydialogBox.FileName.ToString() + ".csv";
+            textBoxFileName.Text = mydialogBox.FileName.ToString();
         }
 
         private void checkBoxSavetofile_CheckedChanged(object sender, EventArgs e)
@@ -247,7 +247,16 @@ namespace Lab1
             // save data to CSV file if asked
             if (checkBoxSavetofile.Checked)
             {
-                outputFile = new StreamWriter(textBoxFileName.Text); // saves to bin\Debug\
+                string fileName = "";
+                if (textBoxFileName.Text.EndsWith(".csv"))
+                {
+                    fileName = textBoxFileName.Text;
+                }
+                else
+                {
+                    fileName = textBoxFileName.Text + ".csv";
+                }
+                outputFile = new StreamWriter(fileName); // saves to bin\Debug\
 
                 //while (ax.TryDequeue(out tempAx) && ay.TryDequeue(out tempAy) && az.TryDequeue(out tempAz))
                 //{
