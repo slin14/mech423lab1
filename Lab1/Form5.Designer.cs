@@ -41,6 +41,16 @@
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxDataHistory = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.checkBoxReadFromFile = new System.Windows.Forms.CheckBox();
+            this.textBoxFileName = new System.Windows.Forms.TextBox();
+            this.buttonFilename = new System.Windows.Forms.Button();
+            this.textBoxAzPeak = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBoxAyPeak = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBoxAxPeak = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -100,7 +110,7 @@
             // buttonProcess
             // 
             this.buttonProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonProcess.Location = new System.Drawing.Point(9, 59);
+            this.buttonProcess.Location = new System.Drawing.Point(9, 56);
             this.buttonProcess.Name = "buttonProcess";
             this.buttonProcess.Size = new System.Drawing.Size(358, 32);
             this.buttonProcess.TabIndex = 3;
@@ -111,7 +121,7 @@
             // textBoxState
             // 
             this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxState.Location = new System.Drawing.Point(257, 103);
+            this.textBoxState.Location = new System.Drawing.Point(257, 94);
             this.textBoxState.Name = "textBoxState";
             this.textBoxState.Size = new System.Drawing.Size(109, 30);
             this.textBoxState.TabIndex = 8;
@@ -121,7 +131,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(116, 106);
+            this.label4.Location = new System.Drawing.Point(116, 97);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 25);
             this.label4.TabIndex = 7;
@@ -131,7 +141,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(4, 142);
+            this.label5.Location = new System.Drawing.Point(4, 129);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(118, 25);
             this.label5.TabIndex = 9;
@@ -139,11 +149,11 @@
             // 
             // textBoxDataHistory
             // 
-            this.textBoxDataHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDataHistory.Location = new System.Drawing.Point(8, 170);
+            this.textBoxDataHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDataHistory.Location = new System.Drawing.Point(8, 157);
             this.textBoxDataHistory.Multiline = true;
             this.textBoxDataHistory.Name = "textBoxDataHistory";
-            this.textBoxDataHistory.Size = new System.Drawing.Size(358, 273);
+            this.textBoxDataHistory.Size = new System.Drawing.Size(358, 236);
             this.textBoxDataHistory.TabIndex = 10;
             this.textBoxDataHistory.TabStop = false;
             // 
@@ -151,11 +161,119 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // checkBoxReadFromFile
+            // 
+            this.checkBoxReadFromFile.AutoSize = true;
+            this.checkBoxReadFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxReadFromFile.Location = new System.Drawing.Point(9, 475);
+            this.checkBoxReadFromFile.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBoxReadFromFile.Name = "checkBoxReadFromFile";
+            this.checkBoxReadFromFile.Size = new System.Drawing.Size(141, 24);
+            this.checkBoxReadFromFile.TabIndex = 11;
+            this.checkBoxReadFromFile.Text = "Read from File";
+            this.checkBoxReadFromFile.UseVisualStyleBackColor = true;
+            this.checkBoxReadFromFile.CheckedChanged += new System.EventHandler(this.checkBoxReadFromFile_CheckedChanged);
+            // 
+            // textBoxFileName
+            // 
+            this.textBoxFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFileName.Location = new System.Drawing.Point(176, 505);
+            this.textBoxFileName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBoxFileName.Name = "textBoxFileName";
+            this.textBoxFileName.Size = new System.Drawing.Size(190, 30);
+            this.textBoxFileName.TabIndex = 12;
+            // 
+            // buttonFilename
+            // 
+            this.buttonFilename.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonFilename.Location = new System.Drawing.Point(8, 504);
+            this.buttonFilename.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonFilename.Name = "buttonFilename";
+            this.buttonFilename.Size = new System.Drawing.Size(162, 33);
+            this.buttonFilename.TabIndex = 13;
+            this.buttonFilename.Text = "Select Filename";
+            this.buttonFilename.UseVisualStyleBackColor = true;
+            this.buttonFilename.Click += new System.EventHandler(this.buttonFilename_Click);
+            // 
+            // textBoxAzPeak
+            // 
+            this.textBoxAzPeak.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAzPeak.Location = new System.Drawing.Point(288, 436);
+            this.textBoxAzPeak.Name = "textBoxAzPeak";
+            this.textBoxAzPeak.Size = new System.Drawing.Size(79, 30);
+            this.textBoxAzPeak.TabIndex = 17;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(252, 439);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(36, 25);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Az";
+            // 
+            // textBoxAyPeak
+            // 
+            this.textBoxAyPeak.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAyPeak.Location = new System.Drawing.Point(165, 436);
+            this.textBoxAyPeak.Name = "textBoxAyPeak";
+            this.textBoxAyPeak.Size = new System.Drawing.Size(79, 30);
+            this.textBoxAyPeak.TabIndex = 16;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(129, 439);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(36, 25);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Ay";
+            // 
+            // textBoxAxPeak
+            // 
+            this.textBoxAxPeak.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAxPeak.Location = new System.Drawing.Point(38, 436);
+            this.textBoxAxPeak.Name = "textBoxAxPeak";
+            this.textBoxAxPeak.Size = new System.Drawing.Size(79, 30);
+            this.textBoxAxPeak.TabIndex = 14;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(3, 439);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(36, 25);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Ax";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(5, 409);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(170, 25);
+            this.label9.TabIndex = 20;
+            this.label9.Text = "Peak Acceleration";
+            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 450);
+            this.ClientSize = new System.Drawing.Size(374, 556);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.textBoxAzPeak);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.textBoxAyPeak);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.textBoxAxPeak);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.checkBoxReadFromFile);
+            this.Controls.Add(this.textBoxFileName);
+            this.Controls.Add(this.buttonFilename);
             this.Controls.Add(this.textBoxDataHistory);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxState);
@@ -189,5 +307,15 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxDataHistory;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox checkBoxReadFromFile;
+        private System.Windows.Forms.TextBox textBoxFileName;
+        private System.Windows.Forms.Button buttonFilename;
+        private System.Windows.Forms.TextBox textBoxAzPeak;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxAyPeak;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBoxAxPeak;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
     }
 }
