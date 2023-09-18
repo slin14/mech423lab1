@@ -20,6 +20,8 @@ namespace Lab1
             Application.Run(new Form2());
             Application.Run(new Form3());
             Application.Run(new Form4());
+            Application.Run(new Form5());
+            Application.Run(new Form6());
         }
     }
 }
