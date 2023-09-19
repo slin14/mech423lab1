@@ -84,8 +84,8 @@ namespace Lab1
         int prevState = 0;
 
         // parameters for state machine
-        int threshX = 50;           // threshold to trigger state machine
-        int threshY = 60;
+        int threshX = 60;           // threshold to trigger state machine
+        int threshY = 70;
         int threshZ = 50;
          
                                     // for the max difference in accerelation over the last numDataPts datapoints
