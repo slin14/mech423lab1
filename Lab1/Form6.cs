@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
+using System.Windows.Forms.VisualStyles;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Lab1
@@ -77,21 +79,23 @@ namespace Lab1
         //         2 = +X +Z
         //         1 = +X
         int state = 0;    // internal state variable   
+        int stateUI = 0;  // to display on UI
+		int counter = 0;
         int prevState = 0;
-        int counter = 0;
 
-        // parameters for state machine
-        int thresh = 65;             // threshold to trigger state machine 
-                                     // for the max difference in accerelation over the last numDataPts datapoints
-                                     // need to exceed gravity (~25) and random minor motion
-        int numDataPts = 11;         // number of data points to analyze
-                                     // must be greater than 0
-        double percentExceed1 = 2.0; // try to prevent false positive detection for gesture 1
+		// parameters for state machine
+		int thresh = 65;            // threshold to trigger state machine 
+                                    // for the max difference in accerelation over the last numDataPts datapoints
+                                    // need to exceed gravity (~25) and random minor motion
+        int numDataPts = 10;        // number of data points to analyze
+                                    // must be greater than 0
+        double percentExceed1 = 1.3; // try to prevent false positive detection for gesture 1
+        double percentExceed2 = 1.0; // try to prevent false positive detection for gesture 2
                                      // % the axis in question must exceed the other axis/axes by
                                      // in order for a gesture to be detected
-        double percentExceed2 = 1.0; // try to prevent false positive detection for gesture 2
-
-        int gesCount = 5;            // number of cycles for the same gesture 
+        int numConsecutivePts = 7;  // number of consecutive datapoints that fit a certain gesture
+                                    // eg. 5 data points must be detected as a certain gesture
+                                    //     in order for that gesture to be displayed on the UI
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -326,29 +330,13 @@ namespace Lab1
         private void state_machine()
         {
             // state machine
-
-            // keep track of previous state
             prevState = state;
-            prevGes3 = ges3;
 
-            // detect gestures
             if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
             {
-                ges3 = true;
-            }
-            if ((axPeak >= thresh) && (azPeak >= thresh) && (axPeak > ayPeak * percentExceed2) && (azPeak > ayPeak * percentExceed2))
-            {
-                ges2 = true;
-            }
-            if ((axPeak >= thresh) && (axPeak > ayPeak * percentExceed1) && (axPeak > azPeak * percentExceed1))
-            {
-                ges1 = true;
-            }
-            
-            // process gestures
-            if (ges3)
-            {
-                if (prevGes3)
+                // Gesture 3 Right-hook (+X +Y +Z)
+                state = 3;
+                if (prevState == 3)
                 {
                     counter++;
                 }
@@ -356,16 +344,12 @@ namespace Lab1
                 {
                     counter = 0;
                 }
-
-                if (counter > gesCount)
-                {
-                    state = 3;
-                    counter = 0;
-                }
             }
-            else if (ges2 && prevGes2)
+            else if ((axPeak >= thresh) && (azPeak >= thresh) && (axPeak > ayPeak * percentExceed2) && (azPeak > ayPeak * percentExceed2))
             {
-                if (prevGes2)
+                // Gesture 2 High punch (+X +Z)
+                state = 2;
+                if (prevState == 2)
                 {
                     counter++;
                 }
@@ -373,37 +357,35 @@ namespace Lab1
                 {
                     counter = 0;
                 }
-
-                if (counter > gesCount)
-                {
-                    state = 2;
-                    counter = 0;
-                }
             }
-            else if (ges1 && prevGes1)
+            else if ((axPeak >= thresh) && (axPeak > ayPeak * percentExceed1) && (axPeak > azPeak * percentExceed1))
             {
-                if (prevGes1)
+                // Gesture 1 Simple punch (+X)
+                state = 1;
+                if (prevState == 1)
                 {
                     counter++;
                 }
                 else
                 {
-                    counter = 0;
-                }
-
-                if (counter > gesCount)
-                {
-                    state = 1;
                     counter = 0;
                 }
             }
             else
             {
+                // no gesture detected
                 state = 0;
                 counter = 0;
             }
 
-            textBoxState.Text = state.ToString();
+
+            // refresh state if gesture detected/undetected
+            if ((state == 0) || (counter >= numConsecutivePts))
+            {
+                stateUI = state;
+            }
+
+            textBoxState.Text = stateUI.ToString();
         }
 
         private void timer2_Tick(object sender, EventArgs e)
