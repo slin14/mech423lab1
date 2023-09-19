@@ -52,13 +52,16 @@
             this.buttonFilename = new System.Windows.Forms.Button();
             this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.checkBoxSavetofile = new System.Windows.Forms.CheckBox();
+            this.textBoxState = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(5, 199);
+            this.label1.Location = new System.Drawing.Point(9, 187);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(176, 25);
             this.label1.TabIndex = 1;
@@ -68,7 +71,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(5, 71);
+            this.label2.Location = new System.Drawing.Point(9, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(188, 25);
             this.label2.TabIndex = 2;
@@ -78,7 +81,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(5, 108);
+            this.label3.Location = new System.Drawing.Point(9, 103);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(184, 25);
             this.label3.TabIndex = 3;
@@ -88,7 +91,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(5, 145);
+            this.label4.Location = new System.Drawing.Point(9, 140);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(144, 25);
             this.label4.TabIndex = 4;
@@ -97,7 +100,7 @@
             // textBoxBytesToRead
             // 
             this.textBoxBytesToRead.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxBytesToRead.Location = new System.Drawing.Point(215, 70);
+            this.textBoxBytesToRead.Location = new System.Drawing.Point(219, 65);
             this.textBoxBytesToRead.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxBytesToRead.Name = "textBoxBytesToRead";
             this.textBoxBytesToRead.Size = new System.Drawing.Size(187, 30);
@@ -107,7 +110,7 @@
             // textBoxTempStringLength
             // 
             this.textBoxTempStringLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxTempStringLength.Location = new System.Drawing.Point(215, 107);
+            this.textBoxTempStringLength.Location = new System.Drawing.Point(219, 102);
             this.textBoxTempStringLength.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxTempStringLength.Name = "textBoxTempStringLength";
             this.textBoxTempStringLength.Size = new System.Drawing.Size(187, 30);
@@ -117,7 +120,7 @@
             // textBoxItemsInQueue
             // 
             this.textBoxItemsInQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxItemsInQueue.Location = new System.Drawing.Point(215, 143);
+            this.textBoxItemsInQueue.Location = new System.Drawing.Point(219, 138);
             this.textBoxItemsInQueue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxItemsInQueue.Name = "textBoxItemsInQueue";
             this.textBoxItemsInQueue.Size = new System.Drawing.Size(187, 30);
@@ -126,7 +129,7 @@
             // 
             // textBoxSerialDataStream
             // 
-            this.textBoxSerialDataStream.Location = new System.Drawing.Point(11, 228);
+            this.textBoxSerialDataStream.Location = new System.Drawing.Point(11, 214);
             this.textBoxSerialDataStream.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxSerialDataStream.Multiline = true;
             this.textBoxSerialDataStream.Name = "textBoxSerialDataStream";
@@ -171,7 +174,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(7, 442);
+            this.label5.Location = new System.Drawing.Point(7, 429);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(36, 25);
             this.label5.TabIndex = 7;
@@ -180,7 +183,7 @@
             // textBoxAx
             // 
             this.textBoxAx.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxAx.Location = new System.Drawing.Point(48, 438);
+            this.textBoxAx.Location = new System.Drawing.Point(48, 425);
             this.textBoxAx.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxAx.Name = "textBoxAx";
             this.textBoxAx.Size = new System.Drawing.Size(69, 30);
@@ -190,7 +193,7 @@
             // textBoxAy
             // 
             this.textBoxAy.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxAy.Location = new System.Drawing.Point(195, 438);
+            this.textBoxAy.Location = new System.Drawing.Point(195, 425);
             this.textBoxAy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxAy.Name = "textBoxAy";
             this.textBoxAy.Size = new System.Drawing.Size(69, 30);
@@ -201,7 +204,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(153, 442);
+            this.label6.Location = new System.Drawing.Point(153, 429);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(36, 25);
             this.label6.TabIndex = 9;
@@ -210,7 +213,7 @@
             // textBoxAz
             // 
             this.textBoxAz.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxAz.Location = new System.Drawing.Point(332, 438);
+            this.textBoxAz.Location = new System.Drawing.Point(337, 425);
             this.textBoxAz.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxAz.Name = "textBoxAz";
             this.textBoxAz.Size = new System.Drawing.Size(69, 30);
@@ -221,7 +224,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(291, 442);
+            this.label7.Location = new System.Drawing.Point(296, 429);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(36, 25);
             this.label7.TabIndex = 11;
@@ -230,7 +233,7 @@
             // textBoxOrientation
             // 
             this.textBoxOrientation.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxOrientation.Location = new System.Drawing.Point(215, 481);
+            this.textBoxOrientation.Location = new System.Drawing.Point(219, 462);
             this.textBoxOrientation.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxOrientation.Name = "textBoxOrientation";
             this.textBoxOrientation.Size = new System.Drawing.Size(187, 30);
@@ -241,7 +244,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(5, 484);
+            this.label8.Location = new System.Drawing.Point(5, 467);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(107, 25);
             this.label8.TabIndex = 14;
@@ -262,10 +265,10 @@
             // textBoxFileName
             // 
             this.textBoxFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxFileName.Location = new System.Drawing.Point(215, 575);
+            this.textBoxFileName.Location = new System.Drawing.Point(219, 575);
             this.textBoxFileName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxFileName.Name = "textBoxFileName";
-            this.textBoxFileName.Size = new System.Drawing.Size(187, 30);
+            this.textBoxFileName.Size = new System.Drawing.Size(183, 30);
             this.textBoxFileName.TabIndex = 3;
             // 
             // checkBoxSavetofile
@@ -281,11 +284,37 @@
             this.checkBoxSavetofile.UseVisualStyleBackColor = true;
             this.checkBoxSavetofile.CheckedChanged += new System.EventHandler(this.checkBoxSavetofile_CheckedChanged);
             // 
+            // textBoxState
+            // 
+            this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxState.Location = new System.Drawing.Point(219, 500);
+            this.textBoxState.Name = "textBoxState";
+            this.textBoxState.Size = new System.Drawing.Size(186, 30);
+            this.textBoxState.TabIndex = 16;
+            this.textBoxState.TabStop = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(6, 503);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(128, 25);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Current State";
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 400;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Form6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(431, 620);
+            this.Controls.Add(this.textBoxState);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.checkBoxSavetofile);
             this.Controls.Add(this.textBoxFileName);
             this.Controls.Add(this.buttonFilename);
@@ -341,5 +370,8 @@
         private System.Windows.Forms.Button buttonFilename;
         private System.Windows.Forms.TextBox textBoxFileName;
         private System.Windows.Forms.CheckBox checkBoxSavetofile;
+        private System.Windows.Forms.TextBox textBoxState;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Timer timer2;
     }
 }

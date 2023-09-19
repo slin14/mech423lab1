@@ -16,12 +16,12 @@ namespace Lab1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-            Application.Run(new Form2());
-            Application.Run(new Form3());
-            Application.Run(new Form4());
-            Application.Run(new Form5());
-            Application.Run(new Form6());
+            //Application.Run(new Form1());
+            //Application.Run(new Form2());
+            //Application.Run(new Form3());
+            //Application.Run(new Form4()); // ex6
+            //Application.Run(new Form5()); // ex7
+            Application.Run(new Form6()); // ex8
         }
     }
 }

@@ -49,6 +49,50 @@ namespace Lab1
         // StreamWriter object for output file
         StreamWriter outputFile;
 
+        int axVal = 127;
+        int ayVal = 127;
+        int azVal = 127;
+
+        int axOld = 127;
+        int ayOld = 127;
+        int azOld = 127;
+
+        // (Max - Min) in the Ax, Ay, Az queue
+        int axPeak = 0;
+        int ayPeak = 0;
+        int azPeak = 0;
+
+        // keep track of which guesture is detected
+        bool ges1 = false;
+        bool ges2 = false;
+        bool ges3 = false;
+
+        bool prevGes1 = false;
+        bool prevGes2 = false; 
+        bool prevGes3 = false;
+
+
+        // STATES: 0 = READY
+        //         3 = +X +Y +Z
+        //         2 = +X +Z
+        //         1 = +X
+        int state = 0;    // internal state variable   
+        int prevState = 0;
+        int counter = 0;
+
+        // parameters for state machine
+        int thresh = 65;             // threshold to trigger state machine 
+                                     // for the max difference in accerelation over the last numDataPts datapoints
+                                     // need to exceed gravity (~25) and random minor motion
+        int numDataPts = 11;         // number of data points to analyze
+                                     // must be greater than 0
+        double percentExceed1 = 2.0; // try to prevent false positive detection for gesture 1
+                                     // % the axis in question must exceed the other axis/axes by
+                                     // in order for a gesture to be detected
+        double percentExceed2 = 1.0; // try to prevent false positive detection for gesture 2
+
+        int gesCount = 5;            // number of cycles for the same gesture 
+
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -125,9 +169,6 @@ namespace Lab1
             bool nextIsAx = false;
             bool nextIsAy = false;
             bool nextIsAz = false;
-            int tempAx = 127;
-            int tempAy = 127;
-            int tempAz = 127;
 
             // orientation of the MSP430EXP PCB
             string orientation = ""; // TODO could use a buffer of 10 to be less sensitive
@@ -147,38 +188,57 @@ namespace Lab1
                     }
                     else if (nextIsAx)
                     {
+                        axVal = dequeuedItem;
                         ax.Enqueue(dequeuedItem);
                         textBoxAx.Text = dequeuedItem.ToString();
                         nextIsAy = true;
                         nextIsAx = false;
-                        tempAx = dequeuedItem;
                     }
                     else if (nextIsAy)
                     {
+                        ayVal = dequeuedItem;
                         ay.Enqueue(dequeuedItem);
                         textBoxAy.Text = dequeuedItem.ToString();
                         nextIsAz = true;
                         nextIsAy = false;
-                        tempAy = dequeuedItem;
                     }
                     else if (nextIsAz)
                     {
+                        azVal = dequeuedItem;
                         az.Enqueue(dequeuedItem);
                         textBoxAz.Text = dequeuedItem.ToString();
                         nextIsAz = false;
-                        tempAz = dequeuedItem;
                         if (checkBoxSavetofile.Checked)
                         {
-                            outputFile.Write($"{tempAx.ToString()}, {tempAy.ToString()}, {tempAz.ToString()}, {DateTime.Now.ToLongTimeString()}\n");
+                            outputFile.Write($"{axVal.ToString()}, {ayVal.ToString()}, {azVal.ToString()}, {DateTime.Now.ToLongTimeString()}\n");
+                        }
+
+                        // if there are enough data points to analyze, call state machine
+                        if (ax.Count() >= numDataPts)
+                        {
+
+                            // analyze the last numDataPts Ax, Ay, Az values
+                            // delete the oldest data point
+                            ax.TryDequeue(out axOld);
+                            ay.TryDequeue(out ayOld);
+                            az.TryDequeue(out azOld);
+
+                            // calculate the peak difference in acceleration over the last numDataPts
+                            axPeak = ax.Max() - ax.Min();
+                            ayPeak = ay.Max() - ay.Min();
+                            azPeak = az.Max() - az.Min();
+
+                            state_machine();
                         }
                     }
                 }
             }
             serialDataString = "";
 
+
             // determine orientation of the MSP430EXP PCB and display orientation in textbox
             // x orientation
-            if (tempAx >= 127) 
+            if (axVal >= 127) 
             {
                 orientation = orientation + "+x, ";
             }
@@ -188,7 +248,7 @@ namespace Lab1
             }
 
             // y orientation
-            if (tempAy >= 127)
+            if (ayVal >= 127)
             {
                 orientation = orientation + "+y, ";
             }
@@ -198,7 +258,7 @@ namespace Lab1
             }
 
             // z orientation
-            if (tempAz >= 127)
+            if (azVal >= 127)
             {
                 orientation = orientation + "+z";
             }
@@ -261,6 +321,94 @@ namespace Lab1
                 // // optional: show a message box indicating data is save to file
                 // MessageBox.Show($"saved data to {textBoxFileName.Text}");
             }
+        }
+
+        private void state_machine()
+        {
+            // state machine
+
+            // keep track of previous state
+            prevState = state;
+            prevGes3 = ges3;
+
+            // detect gestures
+            if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
+            {
+                ges3 = true;
+            }
+            if ((axPeak >= thresh) && (azPeak >= thresh) && (axPeak > ayPeak * percentExceed2) && (azPeak > ayPeak * percentExceed2))
+            {
+                ges2 = true;
+            }
+            if ((axPeak >= thresh) && (axPeak > ayPeak * percentExceed1) && (axPeak > azPeak * percentExceed1))
+            {
+                ges1 = true;
+            }
+            
+            // process gestures
+            if (ges3)
+            {
+                if (prevGes3)
+                {
+                    counter++;
+                }
+                else
+                {
+                    counter = 0;
+                }
+
+                if (counter > gesCount)
+                {
+                    state = 3;
+                    counter = 0;
+                }
+            }
+            else if (ges2 && prevGes2)
+            {
+                if (prevGes2)
+                {
+                    counter++;
+                }
+                else
+                {
+                    counter = 0;
+                }
+
+                if (counter > gesCount)
+                {
+                    state = 2;
+                    counter = 0;
+                }
+            }
+            else if (ges1 && prevGes1)
+            {
+                if (prevGes1)
+                {
+                    counter++;
+                }
+                else
+                {
+                    counter = 0;
+                }
+
+                if (counter > gesCount)
+                {
+                    state = 1;
+                    counter = 0;
+                }
+            }
+            else
+            {
+                state = 0;
+                counter = 0;
+            }
+
+            textBoxState.Text = state.ToString();
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }
