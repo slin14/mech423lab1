@@ -83,13 +83,16 @@ namespace Lab1
 		int counter = 0;
         int prevState = 0;
 
-		// parameters for state machine
-		int thresh = 65;            // threshold to trigger state machine 
+        // parameters for state machine
+        int threshX = 50;           // threshold to trigger state machine
+        int threshY = 60;
+        int threshZ = 50;
+         
                                     // for the max difference in accerelation over the last numDataPts datapoints
                                     // need to exceed gravity (~25) and random minor motion
         int numDataPts = 10;        // number of data points to analyze
                                     // must be greater than 0
-        double percentExceed1 = 1.3; // try to prevent false positive detection for gesture 1
+        double percentExceed1 = 1.4; // try to prevent false positive detection for gesture 1
         double percentExceed2 = 1.0; // try to prevent false positive detection for gesture 2
                                      // % the axis in question must exceed the other axis/axes by
                                      // in order for a gesture to be detected
@@ -332,7 +335,7 @@ namespace Lab1
             // state machine
             prevState = state;
 
-            if ((axPeak >= thresh) && (ayPeak >= thresh) && (azPeak >= thresh))
+            if ((axPeak >= threshX) && (ayPeak >= threshY) && (azPeak >= threshZ))
             {
                 // Gesture 3 Right-hook (+X +Y +Z)
                 state = 3;
@@ -345,7 +348,7 @@ namespace Lab1
                     counter = 0;
                 }
             }
-            else if ((axPeak >= thresh) && (azPeak >= thresh) && (axPeak > ayPeak * percentExceed2) && (azPeak > ayPeak * percentExceed2))
+            else if ((axPeak >= threshX) && (azPeak >= threshZ) && (axPeak > ayPeak * percentExceed2) && (azPeak > ayPeak * percentExceed2))
             {
                 // Gesture 2 High punch (+X +Z)
                 state = 2;
@@ -358,7 +361,7 @@ namespace Lab1
                     counter = 0;
                 }
             }
-            else if ((axPeak >= thresh) && (axPeak > ayPeak * percentExceed1) && (axPeak > azPeak * percentExceed1))
+            else if ((axPeak >= threshX) && (axPeak > ayPeak * percentExceed1) && (axPeak > azPeak * percentExceed1))
             {
                 // Gesture 1 Simple punch (+X)
                 state = 1;
