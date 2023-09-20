@@ -80,11 +80,11 @@ namespace Lab1
         //         4 = DET +Y
         //         5 = WAIT
         //         6 = DET +Z
-        //         7 = GESTURE 2
+        //         7 = GESTURE 3
         //         8 = DET +Z
         //         9 = WAIT
         //        10 = DET +X
-        //        11 = GESTURE 3
+        //        11 = GESTURE 2
         int state = 0;
         int prevState = 0;
 
@@ -389,20 +389,17 @@ namespace Lab1
             }
             else if (state == 2)
             {
-                if (count < countThresh)
+                if ((ayPeak > ayPeakThresh)) // +Y
                 {
-                    state = 2;
+                    state = 4;
+                }
+                else if (count >= countThresh)
+                {
+                    state = 3;
                 }
                 else
                 {
-                    if ((ayPeak > ayPeakThresh)) // +Y
-                    {
-                        state = 4;
-                    }
-                    else
-                    {
-                        state = 3;
-                    }
+                    state = 2;
                 }
             }
             else if (state == 3)
@@ -436,13 +433,13 @@ namespace Lab1
             }
             else if (state == 5)
             {
-                if (count > countThresh)
-                {
-                    state = 5;
-                }
-                else
+                if ((azPeak > azPeakThresh)) // +Z
                 {
                     state = 6;
+                }
+                else // (count < countThresh)
+                {
+                    state = 5;
                 }
             }
             else if (state == 6)
@@ -459,6 +456,16 @@ namespace Lab1
                     }
                 }
                 else
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 7)
+            {
+                if (show < showThresh)
+                {
+                    state = 7;
+                }else
                 {
                     state = 0;
                 }
@@ -503,13 +510,13 @@ namespace Lab1
             }
             else if (state == 5)
             {
-                count++;
+                //count++;
                 detect = 0;
             }
             else if (state == 6)
             {
                 detect++;
-                count = 0;
+                //count = 0;
             }
             else if (state == 7)
             {
