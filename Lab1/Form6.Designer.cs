@@ -54,7 +54,6 @@
             this.checkBoxSavetofile = new System.Windows.Forms.CheckBox();
             this.textBoxGesture = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.label10 = new System.Windows.Forms.Label();
             this.textBoxState = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -304,11 +303,6 @@
             this.label9.TabIndex = 15;
             this.label9.Text = "State";
             // 
-            // timer2
-            // 
-            this.timer2.Interval = 400;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -394,7 +388,6 @@
         private System.Windows.Forms.CheckBox checkBoxSavetofile;
         private System.Windows.Forms.TextBox textBoxGesture;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBoxState;
     }

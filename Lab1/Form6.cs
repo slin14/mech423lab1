@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO; // to save to file
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
-using System.Windows.Forms.VisualStyles;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Lab1
 {
@@ -107,16 +98,11 @@ namespace Lab1
         // for the max difference in accerelation over the last numDataPts datapoints
         // need to exceed gravity (~25) and random minor motion
         int axPeakThresh = 60;           
-        int ayPeakThresh = 70;
+        int ayPeakThresh = 60;
         int azPeakThresh = 50;
 
         // number of data points to analyze (must be greater than 0)
         int numDataPts = 10;        
-
-        double percentExceed1 = 1.4; // try to prevent false positive detection for gesture 1
-        double percentExceed2 = 1.0; // try to prevent false positive detection for gesture 2
-                                     // % the axis in question must exceed the other axis/axes by
-                                     // in order for a gesture to be detected
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -437,9 +423,13 @@ namespace Lab1
                 {
                     state = 6;
                 }
-                else // (count < countThresh)
+                else if (count < countThresh)
                 {
                     state = 5;
+                }
+                else
+                {
+                    state = 0;
                 }
             }
             else if (state == 6)
@@ -466,6 +456,68 @@ namespace Lab1
                 {
                     state = 7;
                 }else
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 8)
+            {
+                if ((azPeak > azPeakThresh)) // +Z
+                {
+                    if (detect < detectThresh)
+                    {
+                        state = 8;
+                    }
+                    else
+                    {
+                        state = 9;
+                    }
+                }
+                else
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 9)
+            {
+                if ((axPeak > axPeakThresh)) // +X
+                {
+                    state = 10;
+                }
+                else if (count < countThresh)
+                {
+                    state = 9;
+                }
+                else
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 10)
+            {
+                if ((axPeak > axPeakThresh)) // +X
+                {
+                    if (detect < detectThresh)
+                    {
+                        state = 10;
+                    }
+                    else
+                    {
+                        state = 11;
+                    }
+                }
+                else
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 11)
+            {
+                if (show < showThresh)
+                {
+                    state = 11;
+                }
+                else
                 {
                     state = 0;
                 }
@@ -510,18 +562,37 @@ namespace Lab1
             }
             else if (state == 5)
             {
-                //count++;
+                count++;
                 detect = 0;
             }
             else if (state == 6)
             {
                 detect++;
-                //count = 0;
+                count = 0;
             }
             else if (state == 7)
             {
                 show++;
                 gesture = 3;
+            }
+            else if (state == 8)
+            {
+                detect++;
+            }
+            else if (state == 9)
+            {
+                count++;
+                detect = 0;
+            }
+            else if (state == 10)
+            {
+                detect++;
+                count = 0;
+            }
+            else if (state == 11)
+            {
+                show++;
+                gesture = 2;
             }
             else { // includes (state == 0)
                 count = 0;
