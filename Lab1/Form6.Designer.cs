@@ -52,9 +52,11 @@
             this.buttonFilename = new System.Windows.Forms.Button();
             this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.checkBoxSavetofile = new System.Windows.Forms.CheckBox();
-            this.textBoxState = new System.Windows.Forms.TextBox();
+            this.textBoxGesture = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxState = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -167,7 +169,6 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 400;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label5
@@ -284,29 +285,48 @@
             this.checkBoxSavetofile.UseVisualStyleBackColor = true;
             this.checkBoxSavetofile.CheckedChanged += new System.EventHandler(this.checkBoxSavetofile_CheckedChanged);
             // 
-            // textBoxState
+            // textBoxGesture
             // 
-            this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxState.Location = new System.Drawing.Point(219, 500);
-            this.textBoxState.Name = "textBoxState";
-            this.textBoxState.Size = new System.Drawing.Size(186, 30);
-            this.textBoxState.TabIndex = 16;
-            this.textBoxState.TabStop = false;
+            this.textBoxGesture.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxGesture.Location = new System.Drawing.Point(304, 500);
+            this.textBoxGesture.Name = "textBoxGesture";
+            this.textBoxGesture.Size = new System.Drawing.Size(101, 30);
+            this.textBoxGesture.TabIndex = 16;
+            this.textBoxGesture.TabStop = false;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(6, 503);
+            this.label9.Location = new System.Drawing.Point(7, 503);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(128, 25);
+            this.label9.Size = new System.Drawing.Size(58, 25);
             this.label9.TabIndex = 15;
-            this.label9.Text = "Current State";
+            this.label9.Text = "State";
             // 
             // timer2
             // 
             this.timer2.Interval = 400;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(218, 505);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(81, 25);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "Gesture";
+            // 
+            // textBoxState
+            // 
+            this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxState.Location = new System.Drawing.Point(74, 500);
+            this.textBoxState.Name = "textBoxState";
+            this.textBoxState.Size = new System.Drawing.Size(101, 30);
+            this.textBoxState.TabIndex = 18;
+            this.textBoxState.TabStop = false;
             // 
             // Form6
             // 
@@ -314,6 +334,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(431, 620);
             this.Controls.Add(this.textBoxState);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.textBoxGesture);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.checkBoxSavetofile);
             this.Controls.Add(this.textBoxFileName);
@@ -338,7 +360,7 @@
             this.Controls.Add(this.comboBox1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form6";
-            this.Text = "Serial Demo";
+            this.Text = "State Machine";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form6_FormClosing);
             this.Load += new System.EventHandler(this.Form6_Load);
             this.ResumeLayout(false);
@@ -370,8 +392,10 @@
         private System.Windows.Forms.Button buttonFilename;
         private System.Windows.Forms.TextBox textBoxFileName;
         private System.Windows.Forms.CheckBox checkBoxSavetofile;
-        private System.Windows.Forms.TextBox textBoxState;
+        private System.Windows.Forms.TextBox textBoxGesture;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBoxState;
     }
 }

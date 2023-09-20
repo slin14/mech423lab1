@@ -64,41 +64,59 @@ namespace Lab1
         int ayPeak = 0;
         int azPeak = 0;
 
-        // keep track of which guesture is detected
-        bool ges1 = false;
-        bool ges2 = false;
-        bool ges3 = false;
+        // average of the Ax, Ay, Az queue
+        double axAvg = 127;
+        double ayAvg = 127;
+        double azAvg = 127;
 
-        bool prevGes1 = false;
-        bool prevGes2 = false; 
-        bool prevGes3 = false;
-
+        double axAvgOld = 127;
+        double ayAvgOld = 127;
+        double azAvgOld = 127;
 
         // STATES: 0 = READY
-        //         3 = +X +Y +Z
-        //         2 = +X +Z
-        //         1 = +X
-        int state = 0;    // internal state variable   
-        int stateUI = 0;  // to display on UI
-		int counter = 0;
+        //         1 = DET +X
+        //         2 = WAIT
+        //         3 = GESTURE 1
+        //         4 = DET +Y
+        //         5 = WAIT
+        //         6 = DET +Z
+        //         7 = GESTURE 2
+        //         8 = DET +Z
+        //         9 = WAIT
+        //        10 = DET +X
+        //        11 = GESTURE 3
+        int state = 0;
         int prevState = 0;
 
-        // parameters for state machine
-        int threshX = 60;           // threshold to trigger state machine
-        int threshY = 70;
-        int threshZ = 50;
-         
-                                    // for the max difference in accerelation over the last numDataPts datapoints
-                                    // need to exceed gravity (~25) and random minor motion
-        int numDataPts = 10;        // number of data points to analyze
-                                    // must be greater than 0
+        // GESTURES: 1 = +X
+        //           2 = +Z, +X
+        //           3 = +X, +Y, +Z
+        int gesture = 0;
+
+		// counters
+		int count  = 0;
+		int detect = 0;
+		int show   = 0;
+
+		// counter expire thresholds
+		int countThresh  = 50;
+		int detectThresh = 5;
+		int showThresh   = 20;
+
+		// acceleration thresholds
+        // for the max difference in accerelation over the last numDataPts datapoints
+        // need to exceed gravity (~25) and random minor motion
+        int axPeakThresh = 60;           
+        int ayPeakThresh = 70;
+        int azPeakThresh = 50;
+
+        // number of data points to analyze (must be greater than 0)
+        int numDataPts = 10;        
+
         double percentExceed1 = 1.4; // try to prevent false positive detection for gesture 1
         double percentExceed2 = 1.0; // try to prevent false positive detection for gesture 2
                                      // % the axis in question must exceed the other axis/axes by
                                      // in order for a gesture to be detected
-        int numConsecutivePts = 7;  // number of consecutive datapoints that fit a certain gesture
-                                    // eg. 5 data points must be detected as a certain gesture
-                                    //     in order for that gesture to be displayed on the UI
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -230,12 +248,28 @@ namespace Lab1
                             ay.TryDequeue(out ayOld);
                             az.TryDequeue(out azOld);
 
+                            // update the previous average
+                            axAvgOld = axAvg;
+                            ayAvgOld = ayAvg;
+                            azAvgOld = azAvg; 
+
                             // calculate the peak difference in acceleration over the last numDataPts
                             axPeak = ax.Max() - ax.Min();
                             ayPeak = ay.Max() - ay.Min();
                             azPeak = az.Max() - az.Min();
 
-                            state_machine();
+                            // calcuate the average in acceleration over the last numDataPts
+                            axAvg = ax.Average() / numDataPts;
+                            ayAvg = ay.Average() / numDataPts;
+                            azAvg = az.Average() / numDataPts;
+
+                            // update state variable
+                            state_machine_control();
+                            textBoxState.Text = state.ToString();
+
+                            // update other variable according to the current state
+                            state_machine_update();
+                            textBoxGesture.Text = gesture.ToString();
                         }
                     }
                 }
@@ -330,67 +364,165 @@ namespace Lab1
             }
         }
 
-        private void state_machine()
+        private void state_machine_control()
         {
             // state machine
             prevState = state;
 
-            if ((axPeak >= threshX) && (ayPeak >= threshY) && (azPeak >= threshZ))
+            if (state == 1)
             {
-                // Gesture 3 Right-hook (+X +Y +Z)
-                state = 3;
-                if (prevState == 3)
+                if ((axPeak > axPeakThresh)) // +X
                 {
-                    counter++;
+                    if (detect < detectThresh)
+                    {
+                        state = 1;
+                    }
+                    else
+                    {
+                        state = 2;
+                    }
                 }
                 else
                 {
-                    counter = 0;
+                    state = 0;
                 }
             }
-            else if ((axPeak >= threshX) && (azPeak >= threshZ) && (axPeak > ayPeak * percentExceed2) && (azPeak > ayPeak * percentExceed2))
+            else if (state == 2)
             {
-                // Gesture 2 High punch (+X +Z)
-                state = 2;
-                if (prevState == 2)
+                if (count < countThresh)
                 {
-                    counter++;
+                    state = 2;
                 }
                 else
                 {
-                    counter = 0;
+                    if ((ayPeak > ayPeakThresh)) // +Y
+                    {
+                        state = 4;
+                    }
+                    else
+                    {
+                        state = 3;
+                    }
                 }
             }
-            else if ((axPeak >= threshX) && (axPeak > ayPeak * percentExceed1) && (axPeak > azPeak * percentExceed1))
+            else if (state == 3)
             {
-                // Gesture 1 Simple punch (+X)
-                state = 1;
-                if (prevState == 1)
+                if (show < showThresh)
                 {
-                    counter++;
+                    state = 3;
                 }
                 else
                 {
-                    counter = 0;
+                    state = 4;
                 }
             }
-            else
+            else if (state == 4)
             {
-                // no gesture detected
-                state = 0;
-                counter = 0;
+                if ((ayPeak > ayPeakThresh)) // +Y
+                {
+                    if (detect < detectThresh)
+                    {
+                        state = 4;
+                    }
+                    else
+                    {
+                        state = 5;
+                    }
+                }
+                else
+                {
+                    state = 0;
+                }
             }
-
-
-            // refresh state if gesture detected/undetected
-            if ((state == 0) || (counter >= numConsecutivePts))
+            else if (state == 5)
             {
-                stateUI = state;
+                if (count > countThresh)
+                {
+                    state = 5;
+                }
+                else
+                {
+                    state = 6;
+                }
             }
-
-            textBoxState.Text = stateUI.ToString();
+            else if (state == 6)
+            {
+                if ((azPeak > azPeakThresh)) // +Z
+                {
+                    if (detect < detectThresh)
+                    {
+                        state = 6;
+                    }
+                    else
+                    {
+                        state = 7;
+                    }
+                }
+                else
+                {
+                    state = 0;
+                }
+            }
+            else // includes (state == 0)
+            {
+                if ((axPeak > axPeakThresh)) // +X
+                {
+                    state = 1;
+                }
+                else if ((azPeak > azPeakThresh)) // +Z
+                {
+                    state = 8;
+                }
+                else
+                {
+                    state = 0;
+                }
+            }
         }
 
+        private void state_machine_update()
+        {
+            if (state == 1)
+            {
+                detect++;
+            }
+            else if (state == 2)
+            {
+                count++;
+                detect = 0;
+            }
+            else if (state == 3)
+            {
+                show++;
+                gesture = 1;
+            }
+            else if (state == 4)
+            {
+                detect++;
+                count = 0;
+            }
+            else if (state == 5)
+            {
+                count++;
+                detect = 0;
+            }
+            else if (state == 6)
+            {
+                detect++;
+                count = 0;
+            }
+            else if (state == 7)
+            {
+                show++;
+                gesture = 3;
+            }
+            else { // includes (state == 0)
+                count = 0;
+                gesture = 0;
+                show = 0;
+                detect = 0;
+            }
+        }
         private void timer2_Tick(object sender, EventArgs e)
         {
 
