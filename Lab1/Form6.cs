@@ -76,6 +76,7 @@ namespace Lab1
         //         9 = WAIT
         //        10 = DET +X
         //        11 = GESTURE 2
+        //        12 = WAIT
         int state = 0;
         int prevState = 0;
 
@@ -508,7 +509,7 @@ namespace Lab1
                 }
                 else
                 {
-                    state = 0;
+                    state = 12;
                 }
             }
             else if (state == 11)
@@ -522,9 +523,20 @@ namespace Lab1
                     state = 0;
                 }
             }
+            else if (state == 12) // prevent backlash after +Z
+            {
+                if (count < countThresh)
+                {
+                    state = 12;
+                }
+                else
+                {
+                    state = 0;
+                }
+            }
             else // includes (state == 0)
             {
-                if ((axPeak > axPeakThresh)) // +X
+                if ((axPeak > axPeakThresh) && (axPeak > ayPeak) && (axPeak > azPeak)) // +X
                 {
                     state = 1;
                 }
@@ -593,6 +605,10 @@ namespace Lab1
             {
                 show++;
                 gesture = 2;
+            }
+            else if (state == 12)
+            {
+                count++;
             }
             else { // includes (state == 0)
                 count = 0;
