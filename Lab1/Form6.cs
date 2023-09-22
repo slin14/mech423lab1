@@ -42,6 +42,7 @@ namespace Lab1
         // StreamWriter object for output file
         StreamWriter outputFile;
 
+        // current and previous Ax, Ay, Az values
         int axVal = 127;
         int ayVal = 127;
         int azVal = 127;
@@ -50,33 +51,13 @@ namespace Lab1
         int ayOld = 127;
         int azOld = 127;
 
-        // (Max - Min) in the Ax, Ay, Az queue
-        int axPeak = 0;
-        int ayPeak = 0;
-        int azPeak = 0;
-
-        // average of the Ax, Ay, Az queue
-        double axAvg = 127;
-        double ayAvg = 127;
-        double azAvg = 127;
-
-        double axAvgOld = 127;
-        double ayAvgOld = 127;
-        double azAvgOld = 127;
-
         // STATES: 0 = READY
-        //         1 = DET +X
-        //         2 = WAIT
-        //         3 = GESTURE 1
-        //         4 = DET +Y
-        //         5 = WAIT
-        //         6 = DET +Z
-        //         7 = GESTURE 3
-        //         8 = DET +Z
-        //         9 = WAIT
-        //        10 = DET +X
-        //        11 = GESTURE 2
-        //        12 = WAIT
+        //         1 = +X
+        //         2 = GESTURE 1 (+X)
+        //         3 = +X +Y
+        //         4 = GESTURE 3 (+X +Y +Z)
+        //         5 = +Z
+        //         7 = GESTURE 2 (+Z +X)
         int state = 0;
         int prevState = 0;
 
@@ -87,23 +68,21 @@ namespace Lab1
 
 		// counters
 		int count  = 0;
-		int detect = 0;
+		int pause  = 0;
 		int show   = 0;
 
 		// counter expire thresholds
-		int countThresh  = 50;
-		int detectThresh = 5;
-		int showThresh   = 20;
+		int countThresh  = 50; // gesture detection expire
+		int pauseThresh  = 10; // pause before detecting next sequence
+		int showThresh   = 50; // gesture display expire
 
 		// acceleration thresholds
-        // for the max difference in accerelation over the last numDataPts datapoints
-        // need to exceed gravity (~25) and random minor motion
-        int axPeakThresh = 60;           
-        int ayPeakThresh = 60;
-        int azPeakThresh = 50;
+        int accelThresh = 40;
 
-        // number of data points to analyze (must be greater than 0)
-        int numDataPts = 10;        
+        // nominal acceleration values
+        int nomAx = 127;
+        int nomAy = 127;
+        int nomAz = 153; 
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -182,6 +161,11 @@ namespace Lab1
             bool nextIsAy = false;
             bool nextIsAz = false;
 
+            // store previous Ax, Ay, Az values
+            axOld = axVal;
+            ayOld = ayVal;
+            azOld = azVal;
+
             // orientation of the MSP430EXP PCB
             string orientation = ""; // TODO could use a buffer of 10 to be less sensitive
 
@@ -201,7 +185,6 @@ namespace Lab1
                     else if (nextIsAx)
                     {
                         axVal = dequeuedItem;
-                        ax.Enqueue(dequeuedItem);
                         textBoxAx.Text = dequeuedItem.ToString();
                         nextIsAy = true;
                         nextIsAx = false;
@@ -209,7 +192,6 @@ namespace Lab1
                     else if (nextIsAy)
                     {
                         ayVal = dequeuedItem;
-                        ay.Enqueue(dequeuedItem);
                         textBoxAy.Text = dequeuedItem.ToString();
                         nextIsAz = true;
                         nextIsAy = false;
@@ -217,38 +199,12 @@ namespace Lab1
                     else if (nextIsAz)
                     {
                         azVal = dequeuedItem;
-                        az.Enqueue(dequeuedItem);
                         textBoxAz.Text = dequeuedItem.ToString();
                         nextIsAz = false;
                         if (checkBoxSavetofile.Checked)
                         {
                             outputFile.Write($"{axVal.ToString()}, {ayVal.ToString()}, {azVal.ToString()}, {DateTime.Now.ToLongTimeString()}\n");
                         }
-
-                        // if there are enough data points to analyze, call state machine
-                        if (ax.Count() >= numDataPts)
-                        {
-
-                            // analyze the last numDataPts Ax, Ay, Az values
-                            // delete the oldest data point
-                            ax.TryDequeue(out axOld);
-                            ay.TryDequeue(out ayOld);
-                            az.TryDequeue(out azOld);
-
-                            // update the previous average
-                            axAvgOld = axAvg;
-                            ayAvgOld = ayAvg;
-                            azAvgOld = azAvg; 
-
-                            // calculate the peak difference in acceleration over the last numDataPts
-                            axPeak = ax.Max() - ax.Min();
-                            ayPeak = ay.Max() - ay.Min();
-                            azPeak = az.Max() - az.Min();
-
-                            // calcuate the average in acceleration over the last numDataPts
-                            axAvg = ax.Average() / numDataPts;
-                            ayAvg = ay.Average() / numDataPts;
-                            azAvg = az.Average() / numDataPts;
 
                             // update state variable
                             state_machine_control();
@@ -257,7 +213,7 @@ namespace Lab1
                             // update other variable according to the current state
                             state_machine_update();
                             textBoxGesture.Text = gesture.ToString();
-                        }
+
                     }
                 }
             }
@@ -356,193 +312,75 @@ namespace Lab1
             // state machine
             prevState = state;
 
+            // acceleration checks
+            bool posX = (axVal < nomAx - accelThresh) && (axVal < axOld);
+            bool negX = (axVal > nomAx + accelThresh) && (axVal > axOld);
+            bool posY = (ayVal < nomAy - accelThresh) && (ayVal < ayOld);
+            bool negY = (ayVal > nomAy + accelThresh) && (ayVal > ayOld);
+            bool posZ = (azVal < nomAz - accelThresh) && (azVal < ayOld);
+            bool negZ = (azVal > nomAz + accelThresh) && (azVal > ayOld);
+
             if (state == 1)
             {
-                if ((axPeak > axPeakThresh)) // +X
+                if ((pause >= pauseThresh) && posY)
                 {
-                    if (detect < detectThresh)
-                    {
-                        state = 1;
-                    }
-                    else
-                    {
-                        state = 2;
-                    }
+                    state = 3;
+                    count = 0;
+                    pause = 0;
                 }
-                else
+                else if (count >= countThresh)
                 {
-                    state = 0;
+                    state = 2;
                 }
             }
             else if (state == 2)
             {
-                if ((ayPeak > ayPeakThresh)) // +Y
+                if (show >= showThresh)
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 3)
+            {
+                if ((pause >= pauseThresh) && posZ)
                 {
                     state = 4;
                 }
                 else if (count >= countThresh)
                 {
-                    state = 3;
-                }
-                else
-                {
-                    state = 2;
-                }
-            }
-            else if (state == 3)
-            {
-                if (show < showThresh)
-                {
-                    state = 3;
-                }
-                else
-                {
-                    state = 4;
+                    state = 0;
                 }
             }
             else if (state == 4)
             {
-                if ((ayPeak > ayPeakThresh)) // +Y
-                {
-                    if (detect < detectThresh)
-                    {
-                        state = 4;
-                    }
-                    else
-                    {
-                        state = 5;
-                    }
-                }
-                else
+                if (show >= showThresh) 
                 {
                     state = 0;
                 }
             }
             else if (state == 5)
             {
-                if ((azPeak > azPeakThresh)) // +Z
+                if ((pause >= pauseThresh) && posX)
                 {
                     state = 6;
-                }
-                else if (count < countThresh)
-                {
-                    state = 5;
-                }
-                else
-                {
-                    state = 0;
                 }
             }
             else if (state == 6)
             {
-                if ((azPeak > azPeakThresh)) // +Z
-                {
-                    if (detect < detectThresh)
-                    {
-                        state = 6;
-                    }
-                    else
-                    {
-                        state = 7;
-                    }
-                }
-                else
-                {
-                    state = 0;
-                }
-            }
-            else if (state == 7)
-            {
-                if (show < showThresh)
-                {
-                    state = 7;
-                }else
-                {
-                    state = 0;
-                }
-            }
-            else if (state == 8)
-            {
-                if ((azPeak > azPeakThresh)) // +Z
-                {
-                    if (detect < detectThresh)
-                    {
-                        state = 8;
-                    }
-                    else
-                    {
-                        state = 9;
-                    }
-                }
-                else
-                {
-                    state = 0;
-                }
-            }
-            else if (state == 9)
-            {
-                if ((axPeak > axPeakThresh)) // +X
-                {
-                    state = 10;
-                }
-                else if (count < countThresh)
-                {
-                    state = 9;
-                }
-                else
-                {
-                    state = 0;
-                }
-            }
-            else if (state == 10)
-            {
-                if ((axPeak > axPeakThresh)) // +X
-                {
-                    if (detect < detectThresh)
-                    {
-                        state = 10;
-                    }
-                    else
-                    {
-                        state = 11;
-                    }
-                }
-                else
-                {
-                    state = 12;
-                }
-            }
-            else if (state == 11)
-            {
-                if (show < showThresh)
-                {
-                    state = 11;
-                }
-                else
-                {
-                    state = 0;
-                }
-            }
-            else if (state == 12) // prevent backlash after +Z
-            {
-                if (count < countThresh)
-                {
-                    state = 12;
-                }
-                else
+                if (show >= showThresh)
                 {
                     state = 0;
                 }
             }
             else // includes (state == 0)
             {
-                if ((axPeak > axPeakThresh) && (axPeak > ayPeak) && (axPeak > azPeak)) // +X
+                if (posX)
                 {
                     state = 1;
                 }
-                else if ((azPeak > azPeakThresh)) // +Z
+                else if (posZ)
                 {
-                    state = 8;
+                    state = 5;
                 }
                 else
                 {
@@ -555,66 +393,39 @@ namespace Lab1
         {
             if (state == 1)
             {
-                detect++;
+                pause++;
+                count++;
             }
             else if (state == 2)
-            {
-                count++;
-                detect = 0;
-            }
-            else if (state == 3)
             {
                 show++;
                 gesture = 1;
             }
-            else if (state == 4)
+            else if (state == 3)
             {
-                detect++;
-                count = 0;
-            }
-            else if (state == 5)
-            {
+                pause++;
                 count++;
-                detect = 0;
             }
-            else if (state == 6)
-            {
-                detect++;
-                count = 0;
-            }
-            else if (state == 7)
+            else if (state == 4)
             {
                 show++;
                 gesture = 3;
             }
-            else if (state == 8)
+            else if (state == 5)
             {
-                detect++;
-            }
-            else if (state == 9)
-            {
+                pause++;
                 count++;
-                detect = 0;
             }
-            else if (state == 10)
-            {
-                detect++;
-                count = 0;
-            }
-            else if (state == 11)
+            else if (state == 6)
             {
                 show++;
                 gesture = 2;
-            }
-            else if (state == 12)
-            {
-                count++;
             }
             else { // includes (state == 0)
                 count = 0;
                 gesture = 0;
                 show = 0;
-                detect = 0;
+                pause = 0;
             }
         }
         private void timer2_Tick(object sender, EventArgs e)
