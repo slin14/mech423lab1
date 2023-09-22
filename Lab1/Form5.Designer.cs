@@ -36,8 +36,6 @@
             this.textBoxAz = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonProcess = new System.Windows.Forms.Button();
-            this.textBoxState = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxDataHistory = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -51,6 +49,10 @@
             this.textBoxAxPeak = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.textBoxState = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxGesture = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -117,25 +119,6 @@
             this.buttonProcess.Text = "Process New Data Point";
             this.buttonProcess.UseVisualStyleBackColor = true;
             this.buttonProcess.Click += new System.EventHandler(this.buttonProcess_Click);
-            // 
-            // textBoxState
-            // 
-            this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxState.Location = new System.Drawing.Point(257, 94);
-            this.textBoxState.Name = "textBoxState";
-            this.textBoxState.Size = new System.Drawing.Size(109, 30);
-            this.textBoxState.TabIndex = 8;
-            this.textBoxState.TabStop = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(116, 97);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(128, 25);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Current State";
             // 
             // label5
             // 
@@ -259,11 +242,53 @@
             this.label9.TabIndex = 20;
             this.label9.Text = "Peak Acceleration";
             // 
+            // textBoxState
+            // 
+            this.textBoxState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxState.Location = new System.Drawing.Point(71, 94);
+            this.textBoxState.Name = "textBoxState";
+            this.textBoxState.Size = new System.Drawing.Size(104, 30);
+            this.textBoxState.TabIndex = 24;
+            this.textBoxState.TabStop = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(178, 99);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(81, 25);
+            this.label10.TabIndex = 23;
+            this.label10.Text = "Gesture";
+            // 
+            // textBoxGesture
+            // 
+            this.textBoxGesture.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxGesture.Location = new System.Drawing.Point(261, 94);
+            this.textBoxGesture.Name = "textBoxGesture";
+            this.textBoxGesture.Size = new System.Drawing.Size(104, 30);
+            this.textBoxGesture.TabIndex = 22;
+            this.textBoxGesture.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(7, 97);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(58, 25);
+            this.label4.TabIndex = 21;
+            this.label4.Text = "State";
+            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 556);
+            this.Controls.Add(this.textBoxState);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.textBoxGesture);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBoxAzPeak);
             this.Controls.Add(this.label6);
@@ -276,8 +301,6 @@
             this.Controls.Add(this.buttonFilename);
             this.Controls.Add(this.textBoxDataHistory);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBoxState);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.buttonProcess);
             this.Controls.Add(this.textBoxAz);
             this.Controls.Add(this.label3);
@@ -302,8 +325,6 @@
         private System.Windows.Forms.TextBox textBoxAz;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonProcess;
-        private System.Windows.Forms.TextBox textBoxState;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxDataHistory;
         private System.Windows.Forms.Timer timer1;
@@ -317,5 +338,9 @@
         private System.Windows.Forms.TextBox textBoxAxPeak;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBoxState;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBoxGesture;
+        private System.Windows.Forms.Label label4;
     }
 }

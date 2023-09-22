@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO; // to save to file
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
-using System.Windows.Forms.VisualStyles;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Lab1
 {
@@ -51,6 +42,7 @@ namespace Lab1
         // StreamWriter object for output file
         StreamWriter outputFile;
 
+        // current and previous Ax, Ay, Az values
         int axVal = 127;
         int ayVal = 127;
         int azVal = 127;
@@ -59,46 +51,38 @@ namespace Lab1
         int ayOld = 127;
         int azOld = 127;
 
-        // (Max - Min) in the Ax, Ay, Az queue
-        int axPeak = 0;
-        int ayPeak = 0;
-        int azPeak = 0;
-
-        // keep track of which guesture is detected
-        bool ges1 = false;
-        bool ges2 = false;
-        bool ges3 = false;
-
-        bool prevGes1 = false;
-        bool prevGes2 = false; 
-        bool prevGes3 = false;
-
-
         // STATES: 0 = READY
-        //         3 = +X +Y +Z
-        //         2 = +X +Z
         //         1 = +X
-        int state = 0;    // internal state variable   
-        int stateUI = 0;  // to display on UI
-		int counter = 0;
+        //         2 = GESTURE 1 (+X)
+        //         3 = +X +Y
+        //         4 = GESTURE 3 (+X +Y +Z)
+        //         5 = +Z
+        //         7 = GESTURE 2 (+Z +X)
+        int state = 0;
         int prevState = 0;
 
-        // parameters for state machine
-        int threshX = 60;           // threshold to trigger state machine
-        int threshY = 70;
-        int threshZ = 50;
-         
-                                    // for the max difference in accerelation over the last numDataPts datapoints
-                                    // need to exceed gravity (~25) and random minor motion
-        int numDataPts = 10;        // number of data points to analyze
-                                    // must be greater than 0
-        double percentExceed1 = 1.4; // try to prevent false positive detection for gesture 1
-        double percentExceed2 = 1.0; // try to prevent false positive detection for gesture 2
-                                     // % the axis in question must exceed the other axis/axes by
-                                     // in order for a gesture to be detected
-        int numConsecutivePts = 7;  // number of consecutive datapoints that fit a certain gesture
-                                    // eg. 5 data points must be detected as a certain gesture
-                                    //     in order for that gesture to be displayed on the UI
+        // GESTURES: 1 = +X
+        //           2 = +Z, +X
+        //           3 = +X, +Y, +Z
+        int gesture = 0;
+
+		// counters
+		int count  = 0;
+		int pause  = 0;
+		int show   = 0;
+
+		// counter expire thresholds
+		int countThresh  = 50; // gesture detection expire
+		int pauseThresh  = 10; // pause before detecting next sequence
+		int showThresh   = 50; // gesture display expire
+
+		// acceleration thresholds
+        int accelThresh = 40;
+
+        // nominal acceleration values
+        int nomAx = 127;
+        int nomAy = 127;
+        int nomAz = 153; 
 
         // acquire the COM port from the ComboBox and use it to configure the COM port on the Serialport object
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -177,6 +161,11 @@ namespace Lab1
             bool nextIsAy = false;
             bool nextIsAz = false;
 
+            // store previous Ax, Ay, Az values
+            axOld = axVal;
+            ayOld = ayVal;
+            azOld = azVal;
+
             // orientation of the MSP430EXP PCB
             string orientation = ""; // TODO could use a buffer of 10 to be less sensitive
 
@@ -196,7 +185,6 @@ namespace Lab1
                     else if (nextIsAx)
                     {
                         axVal = dequeuedItem;
-                        ax.Enqueue(dequeuedItem);
                         textBoxAx.Text = dequeuedItem.ToString();
                         nextIsAy = true;
                         nextIsAx = false;
@@ -204,7 +192,6 @@ namespace Lab1
                     else if (nextIsAy)
                     {
                         ayVal = dequeuedItem;
-                        ay.Enqueue(dequeuedItem);
                         textBoxAy.Text = dequeuedItem.ToString();
                         nextIsAz = true;
                         nextIsAy = false;
@@ -212,7 +199,6 @@ namespace Lab1
                     else if (nextIsAz)
                     {
                         azVal = dequeuedItem;
-                        az.Enqueue(dequeuedItem);
                         textBoxAz.Text = dequeuedItem.ToString();
                         nextIsAz = false;
                         if (checkBoxSavetofile.Checked)
@@ -220,23 +206,14 @@ namespace Lab1
                             outputFile.Write($"{axVal.ToString()}, {ayVal.ToString()}, {azVal.ToString()}, {DateTime.Now.ToLongTimeString()}\n");
                         }
 
-                        // if there are enough data points to analyze, call state machine
-                        if (ax.Count() >= numDataPts)
-                        {
+                            // update state variable
+                            state_machine_control();
+                            textBoxState.Text = state.ToString();
 
-                            // analyze the last numDataPts Ax, Ay, Az values
-                            // delete the oldest data point
-                            ax.TryDequeue(out axOld);
-                            ay.TryDequeue(out ayOld);
-                            az.TryDequeue(out azOld);
+                            // update other variable according to the current state
+                            state_machine_update();
+                            textBoxGesture.Text = gesture.ToString();
 
-                            // calculate the peak difference in acceleration over the last numDataPts
-                            axPeak = ax.Max() - ax.Min();
-                            ayPeak = ay.Max() - ay.Min();
-                            azPeak = az.Max() - az.Min();
-
-                            state_machine();
-                        }
                     }
                 }
             }
@@ -330,67 +307,127 @@ namespace Lab1
             }
         }
 
-        private void state_machine()
+        private void state_machine_control()
         {
             // state machine
             prevState = state;
 
-            if ((axPeak >= threshX) && (ayPeak >= threshY) && (azPeak >= threshZ))
+            // acceleration checks
+            bool posX = (axVal < nomAx - accelThresh) && (axVal < axOld);
+            bool negX = (axVal > nomAx + accelThresh) && (axVal > axOld);
+            bool posY = (ayVal < nomAy - accelThresh) && (ayVal < ayOld);
+            bool negY = (ayVal > nomAy + accelThresh) && (ayVal > ayOld);
+            bool posZ = (azVal < nomAz - accelThresh) && (azVal < ayOld);
+            bool negZ = (azVal > nomAz + accelThresh) && (azVal > ayOld);
+
+            if (state == 1)
             {
-                // Gesture 3 Right-hook (+X +Y +Z)
-                state = 3;
-                if (prevState == 3)
+                if ((pause >= pauseThresh) && posY)
                 {
-                    counter++;
+                    state = 3;
+                    count = 0;
+                    pause = 0;
+                }
+                else if (count >= countThresh)
+                {
+                    state = 2;
+                }
+            }
+            else if (state == 2)
+            {
+                if (show >= showThresh)
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 3)
+            {
+                if ((pause >= pauseThresh) && posZ)
+                {
+                    state = 4;
+                }
+                else if (count >= countThresh)
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 4)
+            {
+                if (show >= showThresh) 
+                {
+                    state = 0;
+                }
+            }
+            else if (state == 5)
+            {
+                if ((pause >= pauseThresh) && posX)
+                {
+                    state = 6;
+                }
+            }
+            else if (state == 6)
+            {
+                if (show >= showThresh)
+                {
+                    state = 0;
+                }
+            }
+            else // includes (state == 0)
+            {
+                if (posX)
+                {
+                    state = 1;
+                }
+                else if (posZ)
+                {
+                    state = 5;
                 }
                 else
                 {
-                    counter = 0;
+                    state = 0;
                 }
             }
-            else if ((axPeak >= threshX) && (azPeak >= threshZ) && (axPeak > ayPeak * percentExceed2) && (azPeak > ayPeak * percentExceed2))
-            {
-                // Gesture 2 High punch (+X +Z)
-                state = 2;
-                if (prevState == 2)
-                {
-                    counter++;
-                }
-                else
-                {
-                    counter = 0;
-                }
-            }
-            else if ((axPeak >= threshX) && (axPeak > ayPeak * percentExceed1) && (axPeak > azPeak * percentExceed1))
-            {
-                // Gesture 1 Simple punch (+X)
-                state = 1;
-                if (prevState == 1)
-                {
-                    counter++;
-                }
-                else
-                {
-                    counter = 0;
-                }
-            }
-            else
-            {
-                // no gesture detected
-                state = 0;
-                counter = 0;
-            }
-
-
-            // refresh state if gesture detected/undetected
-            if ((state == 0) || (counter >= numConsecutivePts))
-            {
-                stateUI = state;
-            }
-
-            textBoxState.Text = stateUI.ToString();
         }
 
+        private void state_machine_update()
+        {
+            if (state == 1)
+            {
+                pause++;
+                count++;
+            }
+            else if (state == 2)
+            {
+                show++;
+                gesture = 1;
+            }
+            else if (state == 3)
+            {
+                pause++;
+                count++;
+            }
+            else if (state == 4)
+            {
+                show++;
+                gesture = 3;
+            }
+            else if (state == 5)
+            {
+                pause++;
+                count++;
+            }
+            else if (state == 6)
+            {
+                show++;
+                gesture = 2;
+            }
+            else { // includes (state == 0)
+                count = 0;
+                gesture = 0;
+                show = 0;
+                pause = 0;
+            }
+        }
         private void timer2_Tick(object sender, EventArgs e)
         {
 
