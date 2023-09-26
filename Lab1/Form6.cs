@@ -34,11 +34,6 @@ namespace Lab1
         // store each new data byte in a ConcurrentQueue instead of a string
         ConcurrentQueue<Int32> dataQueue = new ConcurrentQueue<Int32>();
 
-        // store Ax, Ay, Az values in ConcurrentQueues
-        ConcurrentQueue<Int32> ax = new ConcurrentQueue<Int32>();
-        ConcurrentQueue<Int32> ay = new ConcurrentQueue<Int32>();
-        ConcurrentQueue<Int32> az = new ConcurrentQueue<Int32>();
-
         // StreamWriter object for output file
         StreamWriter outputFile;
 
@@ -77,7 +72,7 @@ namespace Lab1
 		int showThresh   = 50; // gesture display expire
 
 		// acceleration thresholds
-        int accelThresh = 40;
+        int accelThresh = 50;
 
         // nominal acceleration values
         int nomAx = 127;
@@ -317,8 +312,8 @@ namespace Lab1
             bool negX = (axVal > nomAx + accelThresh) && (axVal > axOld);
             bool posY = (ayVal < nomAy - accelThresh) && (ayVal < ayOld);
             bool negY = (ayVal > nomAy + accelThresh) && (ayVal > ayOld);
-            bool posZ = (azVal < nomAz - accelThresh) && (azVal < ayOld);
-            bool negZ = (azVal > nomAz + accelThresh) && (azVal > ayOld);
+            bool posZ = (azVal < nomAz - accelThresh) && (azVal < azOld);
+            bool negZ = (azVal > nomAz + accelThresh) && (azVal > azOld);
 
             if (state == 1)
             {
@@ -363,6 +358,10 @@ namespace Lab1
                 if ((pause >= pauseThresh) && posX)
                 {
                     state = 6;
+                }
+                else if (count >= countThresh)
+                {
+                    state = 0;
                 }
             }
             else if (state == 6)
